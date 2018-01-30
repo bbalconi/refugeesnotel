@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { Link } from 'react-router-dom';
-var axios = require('axios')
 
 var Footer = observer(class Footer extends Component {
   constructor() {

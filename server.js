@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === 'production') {
 
 app.get('/skyWalker', (req, res, next) => {
     const result = darksky
-    .coordinates({lat: 48.816763, lng: -110.929706})
+    .coordinates({lat: 45.817348, lng: -110.929318})
     .exclude('minutely')
     .get()
     .then((data) => {
