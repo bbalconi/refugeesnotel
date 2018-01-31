@@ -5,7 +5,6 @@ var server = require('http').Server(app);
 var request = require('request');
 var io = require('socket.io');
 let bodyParser = require("body-parser");
-var fetch = require('node-fetch');
 var cookieParser = require('cookie-parser');
 var path  = require('path');
 const DarkSky = require('dark-sky')
@@ -19,6 +18,8 @@ var ioServer = io(server, {
   origins: allowedOrigins
 });
  
+app.use(bodyParser.json({ type: 'application/json' }));
+app.use(bodyParser.urlencoded({ extended: false }));
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('./client/build'));
 } else {
@@ -36,6 +37,17 @@ app.get('/skyWalker', (req, res, next) => {
     .catch(console.log);
 })
 
+app.post('/darthVader', (req, res, next) => {
+  console.log(req.body);
+  // const result = darksky
+  // .coordinates({lat: 45.817348, lng: -110.929318})
+  // .exclude('minutely')
+  // .get()
+  // .then((data) => {
+  //   res.json(data)
+  // })
+  // .catch(console.log);
+})
 
 
 app.get("/*", function(req, res) {

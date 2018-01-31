@@ -9,7 +9,6 @@ var Home = observer(class Home extends Component {
 
   componentDidMount() {
     axios.get('/skyWalker').then((res) => {
-      console.log(res.data)
       this.props.snowStore.weather = res.data;
     })
   }
@@ -19,7 +18,7 @@ var Home = observer(class Home extends Component {
     if (snowAlert) {
       return (
         <div>
-          <Intro/>
+          {/* <Intro/> */}
           <CardiB/>
         </div>
       );

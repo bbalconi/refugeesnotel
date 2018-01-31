@@ -12,7 +12,7 @@ class App extends Component {
         <Router>
           <div>
               <div stlye={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
-                <Navbar />
+                {/* <Navbar /> */}
                 <div style={{margin: '0 auto', padding: '0 1em', flex: 1}}>
                 <Route exact path='/' render={() => <Home />} />
                 

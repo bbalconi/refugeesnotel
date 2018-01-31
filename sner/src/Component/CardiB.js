@@ -7,47 +7,80 @@ import {
   GoogleMap,
   Marker,
 } from "react-google-maps";
+var axios = require('axios')
 
 var CardiB = observer(class CardiB extends Component {
-  constructor(){
+  constructor() {
     super()
-    this.getCoords = this.getCoords.bind(this)
+    this.getCoords = this.getCoords.bind(this);
+    this.newState = this.newState.bind(this);
+    this.sendData = this.sendData.bind(this);
     this.state = {
-      test: 'fuck?',
+      lat: 0,
+      lng: 0,
+      latSend: 0,
+      lngSend: 0,
     }
   }
 
-  getCoords(e){
-    console.log('ran?')
-    console.log(e)
+  getCoords(e) {
+    let latty = e.latLng.lat();
+    let latRound = parseFloat(latty.toFixed(4));
+    let longy = e.latLng.lng();
+    let lngRound = parseFloat(longy.toFixed(4));
+    this.setState({
+      lat: latRound,
+      lng: lngRound
+    });
+  }
+
+  newState(){
+    this.setState({
+      latSend: this.state.lat,
+      lngSend: this.state.lng
+    });
+  }
+
+  sendData() {
+      return new Promise((resolve, reject) => {
+        axios.post('/darthVader', {
+          lat: this.state.latSend,
+          lng: this.state.lngSend
+        }).then((res) => {
+          console.log(res)
+          resolve();
+        })
+      })
   }
 
   render() {
     return (
       <DailyCard>
         <Mappy
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%`, width: '50%'}} />}
+          containerElement={<div style={{ height: `800px` }} />}
+          mapElement={<div style={{ height: `100%`, width: '100%' }} />}
+          getCoords={this.getCoords}
+          newState={this.newState}
+          state={this.state}
         />
-        <MapGuide/>        
+        <Text>{this.state.lat}          {this.state.lng}</Text><br/>
+        <Text send>{this.state.latSend}          {this.state.lngSend}</Text>
+        <DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton>
       </DailyCard>
     );
   }
 })
 
-
 const Mappy = withGoogleMap(props =>
   <GoogleMap
-    defaultZoom={8}
+    defaultZoom={10}
     defaultCenter={{ lat: 45.817348, lng: -110.929318 }}
-    onDragEnd={this.getCoords}
+    defaultMapTypeId={`terrain`}
+    onMouseMove={(e) => props.getCoords(e)}
+    onClick={() => props.newState()}
   >
   </GoogleMap>
 );
-
-const MapGuide = () => (
-  <Text>WHAT UP</Text>
-)
 
 const DailyCard = styled.div`
   background-color: #ddd;
@@ -59,7 +92,14 @@ const DailyCard = styled.div`
 `
 
 const Text = styled.h1`
-  color: red`
+  color: red;
+  
+  ${props => props.send && css`
+  color: blue;
+`}`
+
+const DarkSkyButton = styled.button`
+`
 
 
 export default withRouter(inject('snowStore')(CardiB));
