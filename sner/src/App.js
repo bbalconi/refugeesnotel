@@ -13,7 +13,7 @@ class App extends Component {
           <div>
               <div stlye={{ display: 'flex', minHeight: '100vh', flexDirection: 'column' }}>
                 <Navbar />
-                <div style={{maxWidth:'1100px', margin: '0 auto', padding: '0 1em', flex: 1}}>
+                <div style={{margin: '0 auto', padding: '0 1em', flex: 1}}>
                 <Route exact path='/' render={() => <Home />} />
                 
                 </div>

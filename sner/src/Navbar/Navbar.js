@@ -1,56 +1,51 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import Button from 'material-ui/Button';
-import { Link } from 'react-router-dom';
-import Icon from 'material-ui/Icon';
-import Avatar from 'material-ui/Avatar';
-import { inject, observer } from 'mobx-react';
-
-// function Navbar(props) {
-// var Navbar = observer(class Navbar extends Component {
-const styles = theme => ({
-  root: {
-    marginTop: theme.spacing.unit * 3,
-    width: '100%',
-  },
-  flex: {
-    flex: 1,
-  },
-  menuButton: {
-    marginLeft: -12,
-    marginRight: 20,
-  },
-  bigAvatar: {
-    width: 60,
-    height: 60,
-  },
-});
+import styled, { css } from 'styled-components';
 
 
-var Navbar = observer(class Navbar extends Component {
+
+export default class Navbar extends Component {
   render() {
-    const { classes } = this.props;
     return (
-      <div className={classes.root} style={{ marginTop: '0' }}>
-        <AppBar position="static">
-          <Toolbar > 
-            <Typography type="title" className={classes.flex}>
-              <Link style={{ color: '#fff' }} color="contrast" to="/">Refugee Snotel</Link>
-            </Typography>
-          </Toolbar>
-        </AppBar>
-          </div>
+      <Navvy>
+        <ListItem left><i className="material-icons">drag_handle</i></ListItem>
+        <ListItem center><i className="material-icons">sentiment_very_satisfied</i></ListItem>
+        <ListItem right><i className="material-icons">search</i></ListItem>
+      </Navvy>
     );
   }
-});
+}
 
-Navbar.propTypes = {
-  classes: PropTypes.object.isRequired,
-};
+const Navvy = styled.ul`    
+  list-style-type: none;
+  z-index:1;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: white;
+  text-align: center;
+  position: fixed;
+  top: 0;
+  width: 100%;
+`;
 
-export default inject('snowStore')(withStyles(styles)(Navbar));
-// https://material-ui-next.com/demos/app-bar/
+const ListItem = styled.li`
+  font-size: 36px;
+
+  ${props => props.left && css`
+  float: left;
+  cursor: default;
+  `}
+
+  ${props => props.right && css`
+  float: right;
+  display: inline;
+  margin-right: 30px;
+  cursor: default;
+  `}
+
+  ${props => props.center && css`
+  text-align: center;
+  color: red;
+  display: inline;
+  cursor: default;
+`}`;
