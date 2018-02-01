@@ -39,14 +39,14 @@ app.get('/skyWalker', (req, res, next) => {
 
 app.post('/darthVader', (req, res, next) => {
   console.log(req.body);
-  // const result = darksky
-  // .coordinates({lat: 45.817348, lng: -110.929318})
-  // .exclude('minutely')
-  // .get()
-  // .then((data) => {
-  //   res.json(data)
-  // })
-  // .catch(console.log);
+  const result = darksky
+  .coordinates({lat: req.body.lat, lng: req.body.lng})
+  .exclude('minutely')
+  .get()
+  .then((data) => {
+    res.json(data)
+  })
+  .catch(console.log);
 })
 
 

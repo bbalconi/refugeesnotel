@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter, Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import Mappy from './Mappy';
 import {
+  withScriptjs,
   withGoogleMap,
   GoogleMap,
   Marker,
 } from "react-google-maps";
+const _ = require("lodash");
+const { compose, withProps, lifecycle } = require("recompose");
+const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
+const google = window.google;
 var axios = require('axios')
 
 var CardiB = observer(class CardiB extends Component {
@@ -15,6 +21,7 @@ var CardiB = observer(class CardiB extends Component {
     this.getCoords = this.getCoords.bind(this);
     this.newState = this.newState.bind(this);
     this.sendData = this.sendData.bind(this);
+    this.markerCoords = this.markerCoords.bind(this);
     this.state = {
       lat: 0,
       lng: 0,
@@ -32,14 +39,23 @@ var CardiB = observer(class CardiB extends Component {
       lat: latRound,
       lng: lngRound
     });
+  };
+
+  markerCoords(markerLat, markerLng){
+    let markerLatRound = parseFloat(markerLat.toFixed(4));
+    let markerLngRound = parseFloat(markerLng.toFixed(4));
+    this.setState({
+      latSend: markerLatRound,
+      lngSend: markerLngRound
+    })
   }
 
   newState(){
     this.setState({
       latSend: this.state.lat,
       lngSend: this.state.lng
-    });
-  }
+    })
+  };
 
   sendData() {
       return new Promise((resolve, reject) => {
@@ -47,20 +63,20 @@ var CardiB = observer(class CardiB extends Component {
           lat: this.state.latSend,
           lng: this.state.lngSend
         }).then((res) => {
-          console.log(res)
+          this.props.snowStore.locationArray.push(res.data);
+          console.log(this.props.snowStore.locationArray);
           resolve();
-        })
-      })
-  }
+        });
+      });
+  };
 
   render() {
     return (
       <DailyCard>
         <Mappy
-          containerElement={<div style={{ height: `800px` }} />}
-          mapElement={<div style={{ height: `100%`, width: '100%' }} />}
           getCoords={this.getCoords}
           newState={this.newState}
+          markerCoords={this.markerCoords}
           state={this.state}
         />
         <Text>{this.state.lat}          {this.state.lng}</Text><br/>
@@ -68,19 +84,12 @@ var CardiB = observer(class CardiB extends Component {
         <DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton>
       </DailyCard>
     );
-  }
-})
+  };
+});
 
-const Mappy = withGoogleMap(props =>
-  <GoogleMap
-    defaultZoom={10}
-    defaultCenter={{ lat: 45.817348, lng: -110.929318 }}
-    defaultMapTypeId={`terrain`}
-    onMouseMove={(e) => props.getCoords(e)}
-    onClick={() => props.newState()}
-  >
-  </GoogleMap>
-);
+// ------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------
 
 const DailyCard = styled.div`
   background-color: #ddd;
@@ -99,7 +108,17 @@ const Text = styled.h1`
 `}`
 
 const DarkSkyButton = styled.button`
+font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-weight: bold;
+border-radius: 3px;
+color: white;
+width: 250px;
+height: 60px;
+background: #E3184F;
+font-size: 1.25em;
+border: 2px solid #E3184F;
 `
+
 
 
 export default withRouter(inject('snowStore')(CardiB));
