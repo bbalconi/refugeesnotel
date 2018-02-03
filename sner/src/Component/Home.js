@@ -1,28 +1,28 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import CardiB from '../Component/CardiB';
 import WeatherCard from '../Component/WeatherCard';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 var axios = require('axios')
 
 var Home = observer(class Home extends Component {
 
-  // componentDidMount() {
-  //   axios.get('/skyWalker').then((res) => {
-  //     console.log(res.data);
-  //     this.props.snowStore.weather = res.data;
-  //   })
-  // }
+  componentDidMount() {
+    axios.get('/retrieveSavedLocations').then((res) => {
+      console.log(res.data);
+      // this.props.snowStore.weather = res.data;
+    })
+  }
 
   render() {
     // let snowAlert = this.props.snowStore.weather;
     // if (snowAlert) {
       return (
         <div>
-          {/* <Intro/> */}
           <CardiB/>
           <WeatherCard/>
+          {/* <Intro/> */}
         </div>
       );
     }

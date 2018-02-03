@@ -6,18 +6,36 @@ var request = require('request');
 var io = require('socket.io');
 let bodyParser = require("body-parser");
 var cookieParser = require('cookie-parser');
-var path  = require('path');
+var path = require('path');
 const DarkSky = require('dark-sky')
+let mongoose = require('mongoose');
+let uriUtil = require('mongodb-uri');
+let Location = require('./models/Location');
 require('dotenv').config();
+
+let mongodbUri = `mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD}@ds223738.mlab.com:23738/refugeesnotel`;
 
 const darksky = new DarkSky(process.env.DARK_SKY) // Your API KEY can be hardcoded, but I recommend setting it as an env variable.
 //45.816763, -110.929706
- 
+
 var allowedOrigins = "http://localhost:* http://192.168.*.*:* https://coffee-pot-pi.herokuapp.com:*";
 var ioServer = io(server, {
   origins: allowedOrigins
 });
- 
+
+var mongooseUri = uriUtil.formatMongoose(mongodbUri);
+var options = {
+  server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+  replset: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }
+};
+
+mongoose.connect(mongooseUri, options);
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+  console.log('Connected to mLab!');
+});
+
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 if (process.env.NODE_ENV === 'production') {
@@ -27,8 +45,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.get('/skyWalker', (req, res, next) => {
-    const result = darksky
-    .coordinates({lat: 45.817348, lng: -110.929318})
+  const result = darksky
+    .coordinates({ lat: 45.817348, lng: -110.929318 })
     .exclude('minutely')
     .get()
     .then((data) => {
@@ -40,17 +58,34 @@ app.get('/skyWalker', (req, res, next) => {
 app.post('/darthVader', (req, res, next) => {
   console.log(req.body);
   const result = darksky
-  .coordinates({lat: req.body.lat, lng: req.body.lng})
-  .exclude('minutely')
-  .get()
-  .then((data) => {
-    res.json(data)
+    .coordinates({ lat: req.body.lat, lng: req.body.lng })
+    .exclude('minutely')
+    .get()
+    .then((data) => {
+      res.json(data);
+
+    })
+    .catch(console.log);
+})
+
+app.post('/saveLocation', (req, res, next) => {
+  let location = new Location();
+  location.locationObject = req.body.locationObject;
+
+  location.save((err, newLocation) => {
+    if (err) { next(err) }
+    else { res.json(newLocation) };
+  });
+});
+
+app.get('/retrieveSavedLocations', (req, res, next) => {
+  Location.find((req, locations) => {
+    res.json(locations)
   })
-  .catch(console.log);
 })
 
 
-app.get("/*", function(req, res) {
+app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 

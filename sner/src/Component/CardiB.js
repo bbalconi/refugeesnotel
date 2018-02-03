@@ -1,18 +1,8 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
-import { withRouter, Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import Mappy from './Mappy';
-import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker,
-} from "react-google-maps";
-const _ = require("lodash");
-const { compose, withProps, lifecycle } = require("recompose");
-const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
-const google = window.google;
 var axios = require('axios')
 
 var CardiB = observer(class CardiB extends Component {
@@ -63,10 +53,13 @@ var CardiB = observer(class CardiB extends Component {
           lat: this.state.latSend,
           lng: this.state.lngSend
         }).then((res) => {
-          this.props.snowStore.locationArray.push(res.data);
           console.log(res.data);
-          // let readableArray = this.props.snowStore.locationArray[0];
-          // console.log(readableArray);
+          axios.post('/saveLocation', {
+            locationObject: res.data
+          }).then((res) => {
+            console.log(res)
+            console.log('Success')
+          })
           resolve();
         });
       });
