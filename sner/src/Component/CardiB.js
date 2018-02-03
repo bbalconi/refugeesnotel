@@ -64,7 +64,9 @@ var CardiB = observer(class CardiB extends Component {
           lng: this.state.lngSend
         }).then((res) => {
           this.props.snowStore.locationArray.push(res.data);
-          console.log(this.props.snowStore.locationArray);
+          console.log(res.data);
+          // let readableArray = this.props.snowStore.locationArray[0];
+          // console.log(readableArray);
           resolve();
         });
       });
