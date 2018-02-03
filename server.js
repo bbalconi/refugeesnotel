@@ -84,6 +84,28 @@ app.get('/retrieveSavedLocations', (req, res, next) => {
   })
 })
 
+app.post('/deleteCard', (req, res, next) => {
+  console.log(req.body)
+  Location.findOneAndRemove({_id:req.body.id}, (err, deleted) => {
+    let response = {
+      message: "Location deleted",
+      id: deleted._id
+    };
+    res.status(200).send(response)
+  });
+});
+
+
+
+// app.post('/deleteSight', function(req, res, next) {
+//   Sight.findOneAndRemove({slug:req.body.slug}, (err, toDelete) => {  
+//     let response = {
+//       message: "Sight successfully deleted",
+//       id: toDelete._id
+//   }; 
+//   res.status(200).send(response);
+//  });
+
 
 app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));

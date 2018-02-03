@@ -11,7 +11,7 @@ var Home = observer(class Home extends Component {
   componentDidMount() {
     axios.get('/retrieveSavedLocations').then((res) => {
       console.log(res.data);
-      // this.props.snowStore.weather = res.data;
+      this.props.snowStore.weather = res.data;
     })
   }
 

@@ -53,12 +53,12 @@ var CardiB = observer(class CardiB extends Component {
           lat: this.state.latSend,
           lng: this.state.lngSend
         }).then((res) => {
-          console.log(res.data);
           axios.post('/saveLocation', {
             locationObject: res.data
           }).then((res) => {
-            console.log(res)
-            console.log('Success')
+            axios.get('/retrieveSavedLocations').then((res) => {
+              this.props.snowStore.weather = res.data;
+            })
           })
           resolve();
         });
