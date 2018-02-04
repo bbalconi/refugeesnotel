@@ -18,7 +18,7 @@ let mongodbUri = `mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD
 const darksky = new DarkSky(process.env.DARK_SKY) // Your API KEY can be hardcoded, but I recommend setting it as an env variable.
 //45.816763, -110.929706
 
-var allowedOrigins = "http://localhost:* http://192.168.*.*:* https://coffee-pot-pi.herokuapp.com:*";
+var allowedOrigins = "http://localhost:* http://192.168.*.*:* https://littlesky.herokuapp.com:*";
 var ioServer = io(server, {
   origins: allowedOrigins
 });
