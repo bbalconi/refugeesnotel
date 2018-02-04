@@ -30,13 +30,15 @@ db.once('open', function () {
   console.log('Connected to mLab!');
 });
 
-app.use(bodyParser.json({ type: 'application/json' }));
-app.use(bodyParser.urlencoded({ extended: false }));
 if (process.env.NODE_ENV === 'production') {
+  console.log('production!!!!!!!!')
   app.use(express.static('./client/build'));
 } else {
   app.use(express.static('public'));
 }
+app.use(bodyParser.json({ type: 'application/json' }));
+app.use(bodyParser.urlencoded({ extended: false }));
+
 
 app.get('/skyWalker', (req, res, next) => {
   const result = darksky
@@ -89,11 +91,11 @@ app.post('/deleteCard', (req, res, next) => {
   });
 });
 
-app.get("/*",  (req, res) => {
-  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-});
+// app.get("/*",  (req, res) => {
+//   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+// });
 
 var port = process.env.PORT || 5000;
-server.listen(port, () => {
+app.listen(port, () => {
   console.log('listening on port ' + port);
 });    
