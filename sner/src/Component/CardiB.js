@@ -17,6 +17,7 @@ var CardiB = observer(class CardiB extends Component {
       lng: 0,
       latSend: 0,
       lngSend: 0,
+      locationName: ""
     }
   }
 
@@ -31,7 +32,7 @@ var CardiB = observer(class CardiB extends Component {
     });
   };
 
-  markerCoords(markerLat, markerLng){
+  markerCoords(markerLat, markerLng) {
     let markerLatRound = parseFloat(markerLat.toFixed(4));
     let markerLngRound = parseFloat(markerLng.toFixed(4));
     this.setState({
@@ -40,30 +41,43 @@ var CardiB = observer(class CardiB extends Component {
     })
   }
 
-  newState(){
+  newState() {
     this.setState({
       latSend: this.state.lat,
       lngSend: this.state.lng
-    })
+    });
+    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.latSend}%2C${this.state.lngSend}&language=en&key=AIzaSyA3ptyXyCL1xEpLtOr5rsls8BRzNt-Tgc0`).then((res) => {
+      console.log(res.data)
+      this.setState({
+        locationName: res.data.results["1"].formatted_address
+      })
+    });
   };
 
   sendData() {
-      return new Promise((resolve, reject) => {
-        axios.post('/darthVader', {
-          lat: this.state.latSend,
-          lng: this.state.lngSend
+    return new Promise((resolve, reject) => {
+      let geolocation = "";
+      axios.post('/darthVader', {
+        lat: this.state.latSend,
+        lng: this.state.lngSend,
+      }).then((res) => {
+        let locationData = res.data;
+        console.log(this.state.locationName)
+        axios.post('/saveLocation', {
+          locationObject: locationData,
+          locationName: this.state.locationName
         }).then((res) => {
-          axios.post('/saveLocation', {
-            locationObject: res.data
-          }).then((res) => {
-            axios.get('/retrieveSavedLocations').then((res) => {
-              this.props.snowStore.weather = res.data;
-            })
+          axios.get('/retrieveSavedLocations').then((res) => {
+            this.props.snowStore.weather = res.data;
           })
-          resolve();
-        });
+        })
       });
-  };
+      resolve();
+    });
+  }
+
+
+  //`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.latSend}%2C${this.state.lngSend}&language=en`
 
   render() {
     return (
@@ -74,8 +88,8 @@ var CardiB = observer(class CardiB extends Component {
           markerCoords={this.markerCoords}
           state={this.state}
         />
-        <Text>{this.state.lat}          {this.state.lng}</Text><br/>
-        <Text send>{this.state.latSend}          {this.state.lngSend}</Text>
+        <Text>{this.state.lat}          {this.state.lng}</Text><br />
+        <Text send>{this.state.latSend}          {this.state.lngSend}{this.state.locationName}</Text>
         <DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton>
       </DailyCard>
     );

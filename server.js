@@ -39,20 +39,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
-app.get('/skyWalker', (req, res, next) => {
-  const result = darksky
-    .coordinates({ lat: 45.817348, lng: -110.929318 })
-    .exclude('minutely')
-    .get()
-    .then((data) => {
-      res.json(data)
-    })
-    .catch(console.log);
-})
-
 app.post('/darthVader', (req, res, next) => {
-  console.log(req.body);
   const result = darksky
     .coordinates({ lat: req.body.lat, lng: req.body.lng })
     .exclude('minutely')
@@ -64,9 +51,10 @@ app.post('/darthVader', (req, res, next) => {
 })
 
 app.post('/saveLocation', (req, res, next) => {
+  console.log(req.body);
   let location = new Location();
-  location.locationObject = req.body.locationObject;
-
+  location.locationObject = req.body.locationObject,
+  location.locationName = req.body.locationName
   location.save((err, newLocation) => {
     if (err) { next(err) }
     else { res.json(newLocation) };
@@ -80,8 +68,7 @@ app.get('/retrieveSavedLocations', (req, res, next) => {
 })
 
 app.post('/deleteCard', (req, res, next) => {
-  console.log(req.body)
-  Location.findOneAndRemove({_id:req.body.id}, (err, deleted) => {
+  Location.findOneAndRemove({ _id: req.body.id }, (err, deleted) => {
     let response = {
       message: "Location deleted",
       id: deleted._id
@@ -90,8 +77,7 @@ app.post('/deleteCard', (req, res, next) => {
   });
 });
 
-app.get("/*",  (req, res) => {
-  console.log('serving?')
+app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, 'sner', 'build', 'index.html'));
 });
 

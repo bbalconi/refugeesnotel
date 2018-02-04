@@ -65,7 +65,7 @@ export default class DayCard extends Component {
   render() {
     return (
       <EachDay>
-        {this.dayConverter(this.props.day, this.props.index)}
+        <h3>{this.dayConverter(this.props.day, this.props.index)}</h3>
         {this.iconRender(this.props.day.icon)}
         {this.props.day.summary}
         {this.highLow(this.props.day)}
@@ -87,12 +87,12 @@ text-align: center;
 background-color: #ffff;
 height: 350px;
 width: 135px;
-flex-direction: row;
-flex-wrap: wrap;
 margin-bottom: 5px;
 margin-left: 5px;
 margin-right: 5px;
 padding: 1.5em;
+border: 1px solid black;
+border-radius: 5px;
 `
 
 const MaxMin = styled.div`

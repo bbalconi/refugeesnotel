@@ -6,25 +6,22 @@ import DayCard from './DayCard';
 var axios = require('axios')
 
 var WeatherCard = observer(class WeatherCard extends Component {
-  constructor() {
-    super()
-    this.reverseGeocode = this.reverseGeocode.bind(this);
-    this.state = {
-      location: null
-    }
-  }
 
   cardGenerator(location, index) {
+    console.log(location)
     let card = location.locationObject;
-    console.log(card);
-    console.log('no infinite loop please')
     return (
       <LocationCard key={index}>
-        This week in {this.state.location}: {card.daily.summary}
-        {card.daily.data.map(this.dayGenerator, this)}
-        <Delete onClick={() => this.deleteCard(location._id)}>X</Delete>
+        <TopLine>
+          <Delete onClick={() => this.deleteCard(location._id)}>X</Delete>
+          <Location>{location.locationName}</Location>
+        </TopLine>
+        <Header>{card.daily.summary}</Header>
+        <Days>{card.daily.data.map(this.dayGenerator, this)}
+        </Days>
       </LocationCard>
-    )}
+    )
+  }
 
   dayGenerator(day, key) {
     return (
@@ -35,12 +32,6 @@ var WeatherCard = observer(class WeatherCard extends Component {
     )
   }
 
-  reverseGeocode(lat, lng) {
-      axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat}%2C${lng}&language=en`).then((res) => {
-        let geolocation = res.data.results["0"].formatted_address
-    })
-  }
-
   deleteCard(id) {
     axios.post('/deleteCard', { id: id }).then((res) => {
       axios.get('/retrieveSavedLocations').then((res) => {
@@ -48,7 +39,7 @@ var WeatherCard = observer(class WeatherCard extends Component {
       })
     })
   }
-  
+
   render() {
     let locationArray = this.props.snowStore.weather
     return (
@@ -64,16 +55,35 @@ var WeatherCard = observer(class WeatherCard extends Component {
 // ------------------------------------------------------------------------------------
 
 const LocationCard = styled.div`
+text-align: center;
 background-color: #ddd;
 max-width: 1600px;
 min-height: 400px;
+height: auto;
+width: auto;
 margin-top: 8px;
 margin-bottom: 8px;
 margin-left: auto;
 margin-right: auto;
 padding: 1.5em;
-display: flex;
+border: 1px solid black;
+border-radius: 10px;
 `
+
+const TopLine = styled.div`
+display: flex;
+flex-direction: column;
+align-items: center;`
+
+const Location = styled.h1`
+`
+
+const Header = styled.h3`
+`
+
+const Days = styled.div`
+display: flex;
+flex-wrap: wrap;`
 
 const Delete = styled.button`
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -85,6 +95,7 @@ height: 35px;
 background: #E3184F;
 font-size: 1.25em;
 border: 2px solid #E3184F;
+align-self: flex-end;
 `
 
 
