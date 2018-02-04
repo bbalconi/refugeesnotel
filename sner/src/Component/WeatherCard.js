@@ -16,6 +16,7 @@ var WeatherCard = observer(class WeatherCard extends Component {
 
   cardGenerator(location, index) {
     let card = location.locationObject;
+    console.log(card);
     console.log('no infinite loop please')
     return (
       <LocationCard key={index}>
