@@ -91,11 +91,11 @@ app.post('/deleteCard', (req, res, next) => {
   });
 });
 
-// app.get("/*",  (req, res) => {
-//   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
-// });
+app.get("/*",  (req, res) => {
+  res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+});
 
 var port = process.env.PORT || 5000;
-app.listen(port, () => {
+server.listen(port, () => {
   console.log('listening on port ' + port);
 });    
