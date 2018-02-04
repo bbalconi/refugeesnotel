@@ -18,11 +18,6 @@ let mongodbUri = `mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD
 const darksky = new DarkSky(process.env.DARK_SKY) // Your API KEY can be hardcoded, but I recommend setting it as an env variable.
 //45.816763, -110.929706
 
-var allowedOrigins = "http://localhost:* http://192.168.*.*:* https://littlesky.herokuapp.com:*";
-var ioServer = io(server, {
-  origins: allowedOrigins
-});
-
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 var options = {
   server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
@@ -95,19 +90,7 @@ app.post('/deleteCard', (req, res, next) => {
   });
 });
 
-
-
-// app.post('/deleteSight', function(req, res, next) {
-//   Sight.findOneAndRemove({slug:req.body.slug}, (err, toDelete) => {  
-//     let response = {
-//       message: "Sight successfully deleted",
-//       id: toDelete._id
-//   }; 
-//   res.status(200).send(response);
-//  });
-
-
-app.get("/*", function (req, res) {
+app.get("/*",  (req, res) => {
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
