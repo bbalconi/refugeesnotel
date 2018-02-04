@@ -94,7 +94,7 @@ var CardiB = observer(class CardiB extends Component {
           </CoordWrap>
           <CoordWrap>
             <Text send>{this.state.latSend}          {this.state.lngSend}           {this.state.locationName}</Text>
-            <DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton>
+            <ButtonRight><DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton></ButtonRight>
           </CoordWrap>
         </TextWrap>
       </DailyCard>
@@ -132,6 +132,9 @@ const Text = styled.h1`
   color: #ba7284;
   align-content: flex-end;
 `}`
+
+const ButtonRight = styled.div`
+float: right;`
 
 const DarkSkyButton = styled.button`
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

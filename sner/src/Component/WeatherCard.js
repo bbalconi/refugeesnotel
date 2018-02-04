@@ -57,17 +57,17 @@ var WeatherCard = observer(class WeatherCard extends Component {
 
 const LocationCard = styled.div`
 text-align: center;
-background: rgba(0, 0, 0, 0);
+background: rgba(116, 116, 116, 0.1);
 max-width: 1600px;
 min-height: 400px;
 height: auto;
 width: auto;
 margin-top: 8px;
-margin-bottom: 8px;
+margin-bottom: 20px;
 margin-left: auto;
 margin-right: auto;
 padding: .75em;
-border: 1px solid #6228bf;
+border: 1px solid #9a6ae6;
 border-radius: 10px;
 `
 

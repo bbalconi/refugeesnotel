@@ -83,7 +83,7 @@ export default class DayCard extends Component {
 
 
 const EachDay = styled.div`
-background: rgba(0, 0, 0, 0);
+background: rgba(156, 156, 145, 0.2);
 text-align: center;
 height: auto;
 width: 135px;
