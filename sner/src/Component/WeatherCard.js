@@ -17,7 +17,8 @@ var WeatherCard = observer(class WeatherCard extends Component {
           <Location>{location.locationName}</Location>
         </TopLine>
         <Header>{card.daily.summary}</Header>
-        <Days>{card.daily.data.map(this.dayGenerator, this)}
+        <Days>
+          {card.daily.data.map(this.dayGenerator, this)}
         </Days>
       </LocationCard>
     )
@@ -78,15 +79,18 @@ align-items: center;`
 const Location = styled.h1`
 color: #323031;
 margin-top: 0px;
+margin-bottom: 0px;
 `
 
 const Header = styled.h3`
 color: #323031;
+margin-top: 0px;
 `
 
 const Days = styled.div`
 display: flex;
-flex-wrap: wrap;`
+flex-wrap: wrap;
+justify-content: flex-start;`
 
 const Delete = styled.button`
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

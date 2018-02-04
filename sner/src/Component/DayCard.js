@@ -87,15 +87,15 @@ background: rgba(0, 0, 0, 0);
 text-align: center;
 height: auto;
 width: 135px;
-margin-bottom: 0px;
 padding-bottom: 0px;
 padding-top: 0px;
+padding-left: 1.5em;
+padding-right: 1.5em;
 margin-left: 5px;
 margin-right: 5px;
-padding: 1.5em;
-border: 1px solid black;
+margin-bottom: 5px;
+border: 1px solid #6228bf;
 border-radius: 5px;
-padding-top: 0px;
 `
 
 const MaxMin = styled.div`
