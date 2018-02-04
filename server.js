@@ -32,7 +32,7 @@ db.once('open', function () {
 
 if (process.env.NODE_ENV === 'production') {
   console.log('production!!!!!!!!')
-  app.use(express.static('./client/build'));
+  app.use(express.static('./sner/build'));
 } else {
   app.use(express.static('public'));
 }
