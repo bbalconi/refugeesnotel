@@ -32,7 +32,7 @@ export default class DayCard extends Component {
     return (
       <Skycons
         style={{ maxWidth: 150, height: 75 }}
-        color='black'
+        color=' #402924'
         icon={icon}
         autoplay={true}
       />
@@ -65,7 +65,7 @@ export default class DayCard extends Component {
   render() {
     return (
       <EachDay>
-        <h3>{this.dayConverter(this.props.day, this.props.index)}</h3>
+        <Title>{this.dayConverter(this.props.day, this.props.index)}</Title>
         {this.iconRender(this.props.day.icon)}
         {this.props.day.summary}
         {this.highLow(this.props.day)}
@@ -83,24 +83,30 @@ export default class DayCard extends Component {
 
 
 const EachDay = styled.div`
+background: rgba(0, 0, 0, 0);
 text-align: center;
-background-color: #ffff;
-height: 350px;
+height: auto;
 width: 135px;
-margin-bottom: 5px;
+margin-bottom: 0px;
+padding-bottom: 0px;
+padding-top: 0px;
 margin-left: 5px;
 margin-right: 5px;
 padding: 1.5em;
 border: 1px solid black;
 border-radius: 5px;
+padding-top: 0px;
 `
 
 const MaxMin = styled.div`
 `
 
+const Title = styled.h2`
+color: #336699`
+
 const Text = styled.p`
 font-size: 1em;
-color: green;
+color: #336699;
 
 ${props => props.bold && css`
 font-weight: bold;`}

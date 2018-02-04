@@ -88,9 +88,15 @@ var CardiB = observer(class CardiB extends Component {
           markerCoords={this.markerCoords}
           state={this.state}
         />
-        <Text>{this.state.lat}          {this.state.lng}</Text><br />
-        <Text send>{this.state.latSend}          {this.state.lngSend}{this.state.locationName}</Text>
-        <DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton>
+        <TextWrap>
+          <CoordWrap>
+            <Text>{this.state.lat}          {this.state.lng}</Text><br />
+          </CoordWrap>
+          <CoordWrap>
+            <Text send>{this.state.latSend}          {this.state.lngSend}           {this.state.locationName}</Text>
+            <DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton>
+          </CoordWrap>
+        </TextWrap>
       </DailyCard>
     );
   };
@@ -101,20 +107,30 @@ var CardiB = observer(class CardiB extends Component {
 // ------------------------------------------------------------------------------------
 
 const DailyCard = styled.div`
-  background-color: #ddd;
   max-width: 1600px;
   min-height: 400px;
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
   padding: 1.5em;
+  background: rgba(0, 0, 0, 0);
 `
 
+const TextWrap = styled.div`
+display: flex;
+flex-direction: row;
+justify-content: space-between;`
+
+const CoordWrap = styled.div`
+flex: 1`
+
 const Text = styled.h1`
-  color: red;
+  color: #54b7e0;
+  align-content: flex-start;
   
   ${props => props.send && css`
-  color: blue;
+  color: #ba7284;
+  align-content: flex-end;
 `}`
 
 const DarkSkyButton = styled.button`
@@ -124,9 +140,9 @@ border-radius: 3px;
 color: white;
 width: 250px;
 height: 60px;
-background: #E3184F;
+background: #ba7284;
 font-size: 1.25em;
-border: 2px solid #E3184F;
+border: 2px solid #ba7284;
 `
 
 

@@ -56,7 +56,7 @@ var WeatherCard = observer(class WeatherCard extends Component {
 
 const LocationCard = styled.div`
 text-align: center;
-background-color: #ddd;
+background: rgba(0, 0, 0, 0);
 max-width: 1600px;
 min-height: 400px;
 height: auto;
@@ -65,8 +65,8 @@ margin-top: 8px;
 margin-bottom: 8px;
 margin-left: auto;
 margin-right: auto;
-padding: 1.5em;
-border: 1px solid black;
+padding: .75em;
+border: 1px solid #6228bf;
 border-radius: 10px;
 `
 
@@ -76,9 +76,12 @@ flex-direction: column;
 align-items: center;`
 
 const Location = styled.h1`
+color: #323031;
+margin-top: 0px;
 `
 
 const Header = styled.h3`
+color: #323031;
 `
 
 const Days = styled.div`
@@ -92,9 +95,9 @@ border-radius: 3px;
 color: white;
 width: 50px;
 height: 35px;
-background: #E3184F;
+background: #ba7284;
 font-size: 1.25em;
-border: 2px solid #E3184F;
+border: 2px solid #ba7284;
 align-self: flex-end;
 `
 
