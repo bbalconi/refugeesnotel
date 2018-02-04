@@ -51,7 +51,7 @@ app.get('/skyWalker', (req, res, next) => {
     .catch(console.log);
 })
 
-app.post('/darthVader', (req, res, next) => {
+app.get('/darthVader', (req, res, next) => {
   console.log(req.body);
   const result = darksky
     .coordinates({ lat: req.body.lat, lng: req.body.lng })
@@ -59,7 +59,6 @@ app.post('/darthVader', (req, res, next) => {
     .get()
     .then((data) => {
       res.json(data);
-
     })
     .catch(console.log);
 })
