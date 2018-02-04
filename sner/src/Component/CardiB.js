@@ -49,7 +49,7 @@ var CardiB = observer(class CardiB extends Component {
 
   sendData() {
       return new Promise((resolve, reject) => {
-        axios.get('/darthVader', {
+        axios.post('/darthVader', {
           lat: this.state.latSend,
           lng: this.state.lngSend
         }).then((res) => {
