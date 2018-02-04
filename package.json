@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bbalconi/refugeesnotel.git"
+    "url": "git+https://github.com/bbalconi/mapz-n-weather.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/bbalconi/refugeesnotel/issues"
+    "url": "https://github.com/bbalconi/mapz-n-weather/issues"
   },
-  "homepage": "https://github.com/bbalconi/refugeesnotel#readme",
+  "homepage": "https://github.com/bbalconi/mapz-n-weather#readme",
   "dependencies": {
     "body-parser": "^1.18.2",
     "cookie-parser": "^1.4.3",
