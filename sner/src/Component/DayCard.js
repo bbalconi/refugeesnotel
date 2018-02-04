@@ -116,28 +116,3 @@ color: green;
 ${props => props.bold && css`
 font-weight: bold;`}
 `
-
-// dayGenerator(day, index) {
-//   console.log(day)
-//   let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-//   let d = new Date();
-//   let dayName = days[d.getDay()+index];
-//   let icon = day.icon.toUpperCase();
-//   if (icon == 'PARTLY-CLOUDY-DAY') {
-//     icon = 'PARTLY_CLOUDY_DAY'
-//   } else if (icon == 'PARTLY-CLOUDY-NIGHT') {
-//     icon = 'PARTLY_CLOUDY_NIGHT'
-//   };
-//   return (
-//     <EachDay>
-//       {dayName}
-//       <Skycons 
-//       style={{maxWidth: 150, height: 75}}
-//       color='black' 
-//       icon={icon} 
-//       autoplay={true}
-//     />
-//     <MaxMin>High of {day.apparentTemperatureHigh} at </MaxMin>
-//     </EachDay>
-//   )
-// }

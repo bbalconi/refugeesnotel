@@ -40,9 +40,7 @@ var WeatherCard = observer(class WeatherCard extends Component {
 
   deleteCard(id){
     axios.post('/deleteCard', {id:id}).then((res) => {
-      console.log(res);
       axios.get('/retrieveSavedLocations').then((res) => {
-        console.log(res.data);
         this.props.snowStore.weather = res.data;
       })
     })
