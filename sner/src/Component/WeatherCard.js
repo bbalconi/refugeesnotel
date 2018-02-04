@@ -2,14 +2,22 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import Skycons from 'react-skycons';
+import DayCard from './DayCard';
 var axios = require('axios')
 
 var WeatherCard = observer(class WeatherCard extends Component {
+  constructor(){
+    super()
+    this.reverseGeocode = this.reverseGeocode.bind(this);
+  }
 
   cardGenerator(location) {
     let card = location.locationObject;
+    this.reverseGeocode(card.latitude, card.longitude)
     return (
-      <LocationCard key={location.key}>{location._id}
+      <LocationCard key={location.key}>
+        This week in {card.latitude}, {card.longitude}: {card.daily.summary}
         {card.daily.data.map(this.dayGenerator, this)}
         <Delete onClick={() => this.deleteCard(location._id)}>X</Delete>
       </LocationCard>
@@ -17,16 +25,17 @@ var WeatherCard = observer(class WeatherCard extends Component {
   }
 
   dayGenerator(day, index) {
-    console.log(day, index)
-    let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday','Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    let d = new Date();
-    let dayName = days[d.getDay()+index];
-    console.log(d.getDay()+index)
     return (
-      <EachDay>
-        {dayName}
-      </EachDay>
+      <DayCard
+      day={day}
+      index={index}/>
     )
+  }
+
+  reverseGeocode(lat, lng){
+    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat}%2C${lng}&language=en`).then((res) => {
+      console.log(res);
+    })
   }
 
   deleteCard(id){
@@ -56,8 +65,9 @@ var WeatherCard = observer(class WeatherCard extends Component {
 const LocationCard = styled.div`
 background-color: #ddd;
 max-width: 1600px;
-min-height: 200px;
-margin-bottom: 15px;
+min-height: 400px;
+margin-top: 8px;
+margin-bottom: 8px;
 margin-left: auto;
 margin-right: auto;
 padding: 1.5em;
@@ -65,8 +75,8 @@ display: flex;
 `
 
 const EachDay = styled.div`
-background-color: #FFFF;
-height: 150px;
+background-color: #ffff;
+height: 350px;
 width: 250px;
 flex-direction: row;
 margin-bottom: 5px;
@@ -85,5 +95,9 @@ background: #E3184F;
 font-size: 1.25em;
 border: 2px solid #E3184F;
 `
+
+const MaxMin = styled.text`
+font-size: 1em;
+font-color: green;`
 
 export default withRouter(inject('snowStore')(WeatherCard));
