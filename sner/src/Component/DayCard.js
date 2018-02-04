@@ -20,13 +20,13 @@ export default class DayCard extends Component {
 
   iconRender(input) {
     let icon = input.toUpperCase();
-    if (icon == 'PARTLY-CLOUDY-DAY') {
+    if (icon === 'PARTLY-CLOUDY-DAY') {
       icon = 'PARTLY_CLOUDY_DAY'
-    } else if (icon == 'PARTLY-CLOUDY-NIGHT') {
+    } else if (icon === 'PARTLY-CLOUDY-NIGHT') {
       icon = 'PARTLY_CLOUDY_NIGHT'
-    } else if (icon == 'CLEAR-DAY') {
+    } else if (icon === 'CLEAR-DAY') {
       icon = 'CLEAR_DAY'
-    } else if (icon == 'CLEAR-NIGHT') {
+    } else if (icon === 'CLEAR-NIGHT') {
       icon = 'CLEAR_NIGHT'
     }
     return (
@@ -40,7 +40,7 @@ export default class DayCard extends Component {
   }
 
   precip(day){
-    let probability = day.precipProbability*100; 
+    let probability = Math.floor(day.precipProbability*100); 
     if (day.precipType) {
       return <Text>Chance of {day.precipType}: {probability}%</Text>
     }
@@ -55,8 +55,8 @@ export default class DayCard extends Component {
     let lowRound = Math.round(lowTemp);
     return (
       <MaxMin>
-        <Text>High: <Text bold>{highRound}°F.</Text><br/></Text>
-        <Text>Low: <Text bold>{lowRound}°F.</Text><br/></Text>
+        <Text>High: <b>{highRound}°F.</b><br/></Text>
+        <Text>Low: <b>{lowRound}°F.</b><br/></Text>
         {this.precip(day)}
       </MaxMin>
     )
@@ -94,22 +94,11 @@ margin-left: 5px;
 margin-right: 5px;
 padding: 1.5em;
 `
-const Delete = styled.button`
-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-weight: bold;
-border-radius: 3px;
-color: white;
-width: 50px;
-height: 35px;
-background: #E3184F;
-font-size: 1.25em;
-border: 2px solid #E3184F;
-`
 
 const MaxMin = styled.div`
 `
 
-const Text = styled.text`
+const Text = styled.p`
 font-size: 1em;
 color: green;
 

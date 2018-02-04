@@ -1,51 +1,53 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
-import styled, { css } from 'styled-components';
-import Skycons from 'react-skycons';
+import styled from 'styled-components';
 import DayCard from './DayCard';
 var axios = require('axios')
 
 var WeatherCard = observer(class WeatherCard extends Component {
-  constructor(){
+  constructor() {
     super()
     this.reverseGeocode = this.reverseGeocode.bind(this);
+    this.state = {
+      location: null
+    }
   }
 
-  cardGenerator(location) {
+  cardGenerator(location, index) {
     let card = location.locationObject;
-    this.reverseGeocode(card.latitude, card.longitude)
+    console.log('no infinite loop please')
     return (
-      <LocationCard key={location.key}>
-        This week in {card.latitude}, {card.longitude}: {card.daily.summary}
+      <LocationCard key={index}>
+        This week in {this.state.location}: {card.daily.summary}
         {card.daily.data.map(this.dayGenerator, this)}
         <Delete onClick={() => this.deleteCard(location._id)}>X</Delete>
       </LocationCard>
-    )
-  }
+    )}
 
-  dayGenerator(day, index) {
+  dayGenerator(day, key) {
     return (
       <DayCard
-      day={day}
-      index={index}/>
+        day={day}
+        key={key}
+        index={key} />
     )
   }
 
-  reverseGeocode(lat, lng){
-    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat}%2C${lng}&language=en`).then((res) => {
-      console.log(res);
+  reverseGeocode(lat, lng) {
+      axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat}%2C${lng}&language=en`).then((res) => {
+        let geolocation = res.data.results["0"].formatted_address
     })
   }
 
-  deleteCard(id){
-    axios.post('/deleteCard', {id:id}).then((res) => {
+  deleteCard(id) {
+    axios.post('/deleteCard', { id: id }).then((res) => {
       axios.get('/retrieveSavedLocations').then((res) => {
         this.props.snowStore.weather = res.data;
       })
     })
   }
-
+  
   render() {
     let locationArray = this.props.snowStore.weather
     return (
@@ -72,16 +74,6 @@ padding: 1.5em;
 display: flex;
 `
 
-const EachDay = styled.div`
-background-color: #ffff;
-height: 350px;
-width: 250px;
-flex-direction: row;
-margin-bottom: 5px;
-margin-left: 5px;
-margin-right: 5px;
-padding: 1.5em;
-`
 const Delete = styled.button`
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-weight: bold;
@@ -94,8 +86,6 @@ font-size: 1.25em;
 border: 2px solid #E3184F;
 `
 
-const MaxMin = styled.text`
-font-size: 1em;
-font-color: green;`
+
 
 export default withRouter(inject('snowStore')(WeatherCard));

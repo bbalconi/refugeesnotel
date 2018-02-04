@@ -90,6 +90,7 @@ const DailyCard = styled.div`
   background-color: #ddd;
   max-width: 1600px;
   min-height: 400px;
+  margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
   padding: 1.5em;
