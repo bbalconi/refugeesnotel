@@ -92,6 +92,7 @@ app.post('/deleteCard', (req, res, next) => {
 });
 
 app.get("/*",  (req, res) => {
+  console.log('serving?')
   res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
 });
 
