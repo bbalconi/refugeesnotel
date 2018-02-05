@@ -15,9 +15,9 @@ var CardiB = observer(class CardiB extends Component {
     this.state = {
       lat: 0,
       lng: 0,
-      latSend: 0,
-      lngSend: 0,
-      locationName: ""
+      latSend: 45.817,
+      lngSend: -110.929,
+      locationName: "Bridger Bowl, MT, USA"
     }
   }
 
@@ -83,25 +83,25 @@ var CardiB = observer(class CardiB extends Component {
   }
 
   render() {
-    return (
-      <DailyCard>
-        <Mappy
-          getCoords={this.getCoords}
-          newState={this.newState}
-          markerCoords={this.markerCoords}
-          state={this.state}
-        />
-        <TextWrap>
-          <CoordWrap>
-            <Text>{this.state.lat}          {this.state.lng}</Text><br />
-          </CoordWrap>
-          <CoordWrap>
-            <Text send>{this.state.latSend}          {this.state.lngSend}           {this.state.locationName}</Text>
-            <ButtonRight><DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton></ButtonRight>
-          </CoordWrap>
-        </TextWrap>
-      </DailyCard>
-    );
+      return (
+        <DailyCard>
+          <Mappy
+            getCoords={this.getCoords}
+            newState={this.newState}
+            markerCoords={this.markerCoords}
+            state={this.state}
+          />
+          <TextWrap>
+            <CoordWrap>
+              <Text>{this.state.lat}          {this.state.lng}</Text><br />
+            </CoordWrap>
+            <CoordWrap>
+              <Text send>{this.state.latSend}          {this.state.lngSend}           {this.state.locationName}</Text>
+              <ButtonRight><DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton></ButtonRight>
+            </CoordWrap>
+          </TextWrap>
+        </DailyCard>
+      );
   };
 });
 
