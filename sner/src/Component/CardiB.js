@@ -54,9 +54,19 @@ var CardiB = observer(class CardiB extends Component {
     });
     axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.latSend}%2C${this.state.lngSend}&language=en&key=AIzaSyA3ptyXyCL1xEpLtOr5rsls8BRzNt-Tgc0`).then((res) => {
       console.log(res.data)
+      if (res.data.results["1"]){
       this.setState({
         locationName: res.data.results["1"].formatted_address
       })
+    } else if (res.data.status = "ZERO_RESULTS") {
+      this.setState({
+        locationName: ""
+      })
+    } else {
+      this.setState({
+        locationName: res.data.results["0"].formatted_address
+      })
+    }
     });
   };
 
