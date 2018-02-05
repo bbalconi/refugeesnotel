@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import DayCard from './DayCard';
+import 'font-awesome/css/font-awesome.min.css';
 var axios = require('axios')
 
 var WeatherCard = observer(class WeatherCard extends Component {
@@ -12,8 +13,11 @@ var WeatherCard = observer(class WeatherCard extends Component {
     let card = location.locationObject;
     return (
       <LocationCard key={index}>
-        <TopLine>
-          <Delete onClick={() => this.deleteCard(location._id)}>X</Delete>
+        <TopLine><ButtonWrap>
+          <Refresh onClick={() => this.refreshCard(location._id, card)}>
+            <i className="material-icons" style={{color: 'white', fontWeight: 'bold', marginTop: 3}}>autorenew</i>
+            </Refresh>
+          <Delete onClick={() => this.deleteCard(location._id)}>X</Delete></ButtonWrap>
           <Location>{location.locationName}</Location>
         </TopLine>
         <Header>{card.daily.summary}</Header>
@@ -31,6 +35,24 @@ var WeatherCard = observer(class WeatherCard extends Component {
         key={key}
         index={key} />
     )
+  }
+
+  refreshCard(id, card) {
+    axios.post('/darthVader', {
+        lat: card.latitude,
+        lng: card.longitude
+      }).then((res) => {
+        axios.put('/updateCard', {
+          _id: id,
+          newData: res.data
+        }).then((res) => {
+          if (res.data === "Success") {
+            axios.get('/retrieveSavedLocations').then((res) => {
+              this.props.snowStore.weather = res.data;
+            })
+          }
+        })
+      })
   }
 
   deleteCard(id) {
@@ -71,6 +93,11 @@ border: 1px solid #9a6ae6;
 border-radius: 10px;
 `
 
+const ButtonWrap = styled.div`
+display: flex;
+flex-wrap: row;
+align-self: flex-end;`
+
 const TopLine = styled.div`
 display: flex;
 flex-direction: column;
@@ -92,8 +119,21 @@ display: flex;
 flex-wrap: wrap;
 justify-content: flex-start;`
 
+const Refresh = styled.button`
+font-weight: bold;
+border-radius: 3px;
+color: white;
+width: 50px;
+height: 35px;
+background: #54b7e0;
+font-size: 1.25em;
+border: 2px solid #54b7e0;
+align-self: flex-end;
+margin-right: 7px;
+font-family: Font Awesome 5 Solid;
+`
+
 const Delete = styled.button`
-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-weight: bold;
 border-radius: 3px;
 color: white;

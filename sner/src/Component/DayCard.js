@@ -18,6 +18,13 @@ export default class DayCard extends Component {
     return dayName
   }
 
+  dateConverter(day, index) {
+    let d = new Date();
+    let dd = d.getDate()+index;
+    let mm = d.getMonth()+1;
+    return `${mm}/${dd}`
+  }
+
   iconRender(input) {
     let icon = input.toUpperCase();
     if (icon === 'PARTLY-CLOUDY-DAY') {
@@ -42,21 +49,31 @@ export default class DayCard extends Component {
   precip(day){
     let probability = Math.floor(day.precipProbability*100); 
     if (day.precipType) {
-      return <Text>Chance of {day.precipType}: {probability}%</Text>
+      return <Text chance>Chance of {day.precipType}: <b style={{color: '#336699'}}>{probability}%</b></Text>
     }
   }
 
+  tempLowTime(seconds) {
+    let duration = seconds * 1000;
+    let minutes = parseInt((duration/(1000*60))%60)
+      , hours = parseInt((duration/(1000*60*60))%24);
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
 
+    return `${hours}:${minutes}`;
+  }
 
   highLow(day) {
     let highTemp = day.apparentTemperatureHigh;
     let highRound = Math.round(highTemp);
     let lowTemp = day.apparentTemperatureLow;
     let lowRound = Math.round(lowTemp);
+    let time = this.tempLowTime(day.apparentTemperatureHighTime)
+    console.log(time)
     return (
       <MaxMin>
-        <Text>High: <b>{highRound}°F.</b><br/></Text>
-        <Text>Low: <b>{lowRound}°F.</b><br/></Text>
+        <Text hiLo>High: <b style={{color: '#336699'}}>{highRound}°F.</b><br/></Text>
+        <Text hiLo>Low: <b style={{color: '#336699'}}>{lowRound}°F.</b><br/></Text>
         {this.precip(day)}
       </MaxMin>
     )
@@ -66,8 +83,9 @@ export default class DayCard extends Component {
     return (
       <EachDay>
         <Title>{this.dayConverter(this.props.day, this.props.index)}</Title>
+        <Title date>{this.dateConverter(this.props.day, this.props.index)}</Title>
         {this.iconRender(this.props.day.icon)}
-        {this.props.day.summary}
+        <Summary>{this.props.day.summary}</Summary>
         {this.highLow(this.props.day)}
       </EachDay>
     );
@@ -99,15 +117,36 @@ border-radius: 5px;
 `
 
 const MaxMin = styled.div`
+
 `
 
+const Summary = styled.p`
+font-size: .9em;
+margin-bottom: .5em;
+margin-left: -12px;
+margin-right: -12px;`
+
 const Title = styled.h2`
-color: #336699`
+margin-top: .5em;
+color: #336699;
+margin-bottom: 0;
+
+${props => props.date && css`
+font-size: 1.15em;
+margin-top: 0px;
+margin-bottom: .5em;
+color: black;`}`
 
 const Text = styled.p`
 font-size: 1em;
-color: #336699;
+color: black;
 
-${props => props.bold && css`
-font-weight: bold;`}
-`
+${props => props.hiLo && css`
+margin-top: 0px;
+margin-bottom: 0px;`}
+
+${props => props.chance && css`
+margin-top: 2px;
+font-size: 1em;
+margin-left: -12px;
+margin-right: -12px;`}`

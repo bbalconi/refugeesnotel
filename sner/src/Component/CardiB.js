@@ -76,9 +76,6 @@ var CardiB = observer(class CardiB extends Component {
     });
   }
 
-
-  //`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.latSend}%2C${this.state.lngSend}&language=en`
-
   render() {
     return (
       <DailyCard>

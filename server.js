@@ -31,7 +31,6 @@ db.once('open', function () {
 });
 
 if (process.env.NODE_ENV === 'production') {
-  console.log('production!!!!!!!!')
   app.use(express.static('./sner/build'));
 } else {
   app.use(express.static('public'));
@@ -51,7 +50,6 @@ app.post('/darthVader', (req, res, next) => {
 })
 
 app.post('/saveLocation', (req, res, next) => {
-  console.log(req.body);
   let location = new Location();
   location.locationObject = req.body.locationObject,
   location.locationName = req.body.locationName
@@ -66,6 +64,15 @@ app.get('/retrieveSavedLocations', (req, res, next) => {
     res.json(locations)
   })
 })
+
+app.put('/updateCard', (req, res, next) => {
+  let id = req.body._id;
+  let newData = req.body.newData;
+    Location.findByIdAndUpdate(id, {$set: {locationObject: newData}}, (err, res) => {
+        if (err) { console.log(err) }
+    });
+    res.send('Success');
+});
 
 app.post('/deleteCard', (req, res, next) => {
   Location.findOneAndRemove({ _id: req.body.id }, (err, deleted) => {
