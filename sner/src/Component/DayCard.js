@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import styled, { css } from 'styled-components';
-import Skycons from 'react-skycons'
+import Skycons from 'react-skycons';
+import '../weather-icons/css/weather-icons-wind.min.css';
+
 
 export default class DayCard extends Component {
   constructor() {
@@ -69,9 +71,16 @@ export default class DayCard extends Component {
     let lowTemp = day.apparentTemperatureLow;
     let lowRound = Math.round(lowTemp);
     let time = this.tempLowTime(day.apparentTemperatureHighTime)
-    console.log(time)
+    let windDirection = `wi wi-wind from-${day.windBearing}-deg`
+    let windSpeed = Math.round(day.windSpeed);
+    let windGust = Math.round(day.windGust);
     return (
       <MaxMin>
+        <Text wind>
+        <i className={windDirection} style={{fontSize: 36, color:'#ba7284'}}></i><br/>
+          Wind speed: <b style={{color: '#ba7284'}}>{windSpeed} mph.</b><br/>
+          Wind gusts: <b style={{color: '#ba7284'}}>{windGust} mph.</b>
+        </Text>
         <Text hiLo>High: <b style={{color: '#336699'}}>{highRound}°F.</b><br/></Text>
         <Text hiLo>Low: <b style={{color: '#336699'}}>{lowRound}°F.</b><br/></Text>
         {this.precip(day)}
@@ -144,6 +153,10 @@ color: black;
 ${props => props.hiLo && css`
 margin-top: 0px;
 margin-bottom: 0px;`}
+
+${props => props.wind && css`
+margin-left: -12px;
+margin-right: -12px;`}
 
 ${props => props.chance && css`
 margin-top: 2px;

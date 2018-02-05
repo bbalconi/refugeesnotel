@@ -3,7 +3,6 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import DayCard from './DayCard';
-import 'font-awesome/css/font-awesome.min.css';
 var axios = require('axios')
 
 var WeatherCard = observer(class WeatherCard extends Component {
