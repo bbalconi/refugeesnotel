@@ -133,7 +133,8 @@ const Summary = styled.p`
 font-size: .9em;
 margin-bottom: .5em;
 margin-left: -12px;
-margin-right: -12px;`
+margin-right: -12px;
+font-weight: 525;`
 
 const Title = styled.h2`
 margin-top: .5em;
