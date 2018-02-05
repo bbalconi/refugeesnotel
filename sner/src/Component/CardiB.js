@@ -91,11 +91,6 @@ var CardiB = observer(class CardiB extends Component {
     });
   };
 
-  // {
-  //   position: {
-  //     lat: 45.817348, lng: -110.929318
-  //   }}
-
   markerMaker() {
     let storeArray = this.props.snowStore.weather;
     let coordArray = [];

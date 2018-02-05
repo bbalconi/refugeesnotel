@@ -7,7 +7,7 @@ import {
   InfoWindow,
 } from "react-google-maps";
 const _ = require("lodash");
-const { compose, withProps, withStateHandlers, lifecycle } = require("recompose");
+const { compose, withProps, lifecycle } = require("recompose");
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
 const google = window.google;
 
@@ -29,6 +29,17 @@ const Mappy = compose(
         markers: [],
         onMapMounted: ref => {
           refs.map = ref;
+          console.log(this.state.markers.length != 0);
+          if (this.state.markers.length > 0) {
+            console.log('this shouldnt run')
+            const bounds = new google.maps.LatLngBounds();
+            this.state.markers.map((marker) => {
+              bounds.extend(new google.maps.LatLng(
+                marker.position.lat, marker.position.lng
+              ));
+            });
+            refs.map.fitBounds(bounds);
+          }
         },
         onBoundsChanged: () => {
           this.setState({
@@ -60,12 +71,17 @@ const Mappy = compose(
             center: nextCenter,
             markers: nextMarkers,
           });
-          // refs.map.fitBounds(bounds);
+          //refs.map.fitBounds(bounds);
         },
       })
     },
     componentDidMount() {
       let coordArray = this.props.markerMaker();
+      let bounds = new google.maps.LatLngBounds();
+      coordArray.forEach((marker) => {
+        // console.log(marker);
+        // console.log(bounds);
+      })
       this.setState({
         markers: coordArray,
       })
@@ -75,7 +91,7 @@ const Mappy = compose(
       this.setState({
         markers: coordArray,
       });
-    }
+    },
   }),
   withScriptjs,
   withGoogleMap
