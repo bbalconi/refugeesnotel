@@ -39,6 +39,12 @@ var CardiB = observer(class CardiB extends Component {
       latSend: markerLatRound,
       lngSend: markerLngRound
     })
+    axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.latSend}%2C${this.state.lngSend}&language=en&key=AIzaSyA3ptyXyCL1xEpLtOr5rsls8BRzNt-Tgc0`).then((res) => {
+      console.log(res.data)
+      this.setState({
+        locationName: res.data.results["1"].formatted_address
+      })
+    });
   }
 
   newState() {
