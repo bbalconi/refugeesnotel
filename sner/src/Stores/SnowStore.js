@@ -6,6 +6,7 @@ export default class SnowStore {
   constructor() {
     extendObservable(this, {
       weather: [],
-    })
+      loaded: false,
+    });
   };
-}
+};

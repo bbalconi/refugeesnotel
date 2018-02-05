@@ -8,7 +8,6 @@ var axios = require('axios')
 var WeatherCard = observer(class WeatherCard extends Component {
 
   cardGenerator(location, index) {
-    console.log(location)
     let card = location.locationObject;
     return (
       <LocationCard key={index}>

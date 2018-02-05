@@ -4,9 +4,10 @@ import {
   withGoogleMap,
   GoogleMap,
   Marker,
+  InfoWindow,
 } from "react-google-maps";
 const _ = require("lodash");
-const { compose, withProps, lifecycle } = require("recompose");
+const { compose, withProps, withStateHandlers, lifecycle } = require("recompose");
 const { SearchBox } = require("react-google-maps/lib/components/places/SearchBox");
 const google = window.google;
 
@@ -63,7 +64,19 @@ const Mappy = compose(
         },
       })
     },
-  }), 
+    componentDidMount() {
+      let coordArray = this.props.markerMaker();
+      this.setState({
+        markers: coordArray,
+      })
+    },
+    componentWillReceiveProps() {
+      let coordArray = this.props.markerMaker();
+      this.setState({
+        markers: coordArray,
+      });
+    }
+  }),
   withScriptjs,
   withGoogleMap
 )(props =>
@@ -101,9 +114,18 @@ const Mappy = compose(
       />
     </SearchBox>
     {props.markers.map((marker, index) =>
-      <Marker key={index} position={marker.position} />
+      <Marker
+        key={index}
+        position={marker.position}
+        onClick={() => { marker.isOpen = !marker.isOpen }}
+        onRightClick={() => console.log(marker)}>
+        {marker.isOpen && (
+          <InfoWindow
+            onCloseClick={() => { marker.isOpen = !marker.isOpen }}
+          ><div>{marker.name}</div></InfoWindow>)}
+      </Marker>
     )}
   </GoogleMap>
-);
+  );
 
 export default Mappy;

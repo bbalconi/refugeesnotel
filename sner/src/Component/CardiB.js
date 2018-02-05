@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import Mappy from './Mappy';
+import WeatherCard from '../Component/WeatherCard';
 var axios = require('axios')
 
 var CardiB = observer(class CardiB extends Component {
@@ -12,12 +13,13 @@ var CardiB = observer(class CardiB extends Component {
     this.newState = this.newState.bind(this);
     this.sendData = this.sendData.bind(this);
     this.markerCoords = this.markerCoords.bind(this);
+    this.markerMaker = this.markerMaker.bind(this);
     this.state = {
       lat: 0,
       lng: 0,
       latSend: 45.817,
       lngSend: -110.929,
-      locationName: "Bridger Bowl, MT, USA"
+      locationName: "Bridger Bowl, MT, USA",
     }
   }
 
@@ -40,7 +42,6 @@ var CardiB = observer(class CardiB extends Component {
       lngSend: markerLngRound
     })
     axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.latSend}%2C${this.state.lngSend}&language=en&key=AIzaSyA3ptyXyCL1xEpLtOr5rsls8BRzNt-Tgc0`).then((res) => {
-      console.log(res.data)
       this.setState({
         locationName: res.data.results["1"].formatted_address
       })
@@ -53,20 +54,19 @@ var CardiB = observer(class CardiB extends Component {
       lngSend: this.state.lng
     });
     axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${this.state.latSend}%2C${this.state.lngSend}&language=en&key=AIzaSyA3ptyXyCL1xEpLtOr5rsls8BRzNt-Tgc0`).then((res) => {
-      console.log(res.data)
-      if (res.data.results["1"]){
-      this.setState({
-        locationName: res.data.results["1"].formatted_address
-      })
-    } else if (res.data.status = "ZERO_RESULTS") {
-      this.setState({
-        locationName: ""
-      })
-    } else {
-      this.setState({
-        locationName: res.data.results["0"].formatted_address
-      })
-    }
+      if (res.data.results["1"]) {
+        this.setState({
+          locationName: res.data.results["1"].formatted_address
+        })
+      } else if (res.data.status = "ZERO_RESULTS") {
+        this.setState({
+          locationName: ""
+        })
+      } else {
+        this.setState({
+          locationName: res.data.results["0"].formatted_address
+        })
+      }
     });
   };
 
@@ -78,7 +78,6 @@ var CardiB = observer(class CardiB extends Component {
         lng: this.state.lngSend,
       }).then((res) => {
         let locationData = res.data;
-        console.log(this.state.locationName)
         axios.post('/saveLocation', {
           locationObject: locationData,
           locationName: this.state.locationName
@@ -90,28 +89,47 @@ var CardiB = observer(class CardiB extends Component {
       });
       resolve();
     });
-  }
+  };
+
+  // {
+  //   position: {
+  //     lat: 45.817348, lng: -110.929318
+  //   }}
+
+  markerMaker() {
+    let storeArray = this.props.snowStore.weather;
+    let coordArray = [];
+    storeArray.forEach((item) => {
+      let coordObject = { position: {
+        lat: item.locationObject.latitude, lng: item.locationObject.longitude
+      }, isOpen: true, name: item.locationName};
+      coordArray.push(coordObject);
+    });
+    return coordArray;
+  };
 
   render() {
-      return (
-        <DailyCard>
-          <Mappy
-            getCoords={this.getCoords}
-            newState={this.newState}
-            markerCoords={this.markerCoords}
-            state={this.state}
-          />
-          <TextWrap>
-            <CoordWrap>
-              <Text>{this.state.lat}          {this.state.lng}</Text><br />
-            </CoordWrap>
-            <CoordWrap>
-              <Text send>{this.state.latSend}          {this.state.lngSend}           {this.state.locationName}</Text>
-              <ButtonRight><DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton></ButtonRight>
-            </CoordWrap>
-          </TextWrap>
-        </DailyCard>
-      );
+    return (
+      <DailyCard>
+        <Mappy
+          getCoords={this.getCoords}
+          newState={this.newState}
+          markerCoords={this.markerCoords}
+          state={this.state}
+          markerMaker={this.markerMaker}
+        />
+        <TextWrap>
+          <CoordWrap>
+            <Text>{this.state.lat}          {this.state.lng}</Text><br />
+          </CoordWrap>
+          <CoordWrap>
+            <Text send>{this.state.latSend}          {this.state.lngSend}           {this.state.locationName}</Text>
+            <ButtonRight><DarkSkyButton onClick={this.sendData}>Generate Weather Data</DarkSkyButton></ButtonRight>
+          </CoordWrap>
+        </TextWrap>
+        <WeatherCard />
+      </DailyCard>
+    );
   };
 });
 

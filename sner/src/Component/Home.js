@@ -8,23 +8,27 @@ var axios = require('axios')
 
 var Home = observer(class Home extends Component {
 
-  componentDidMount() {
-    axios.get('/retrieveSavedLocations').then((res) => {
-      console.log(res.data);
-      this.props.snowStore.weather = res.data;
-    })
-  }
+  componentWillMount() {
+    return new Promise((resolve, reject) => {
+      axios.get('/retrieveSavedLocations').then((res) => {
+        this.props.snowStore.weather = res.data;
+        this.props.snowStore.loaded = true;
+      });
+    });
+  };
 
   render() {
-      return (
-        <Parent>
-          <CardiB/>
-          <WeatherCard/>
-        </Parent>
-      );
-    }
-  })
-
+    if (this.props.snowStore.loaded == true) {
+    return (
+      <Parent>
+        <CardiB />
+      </Parent>
+    )} else {
+      return(<div></div>)
+    };
+  };
+})
+;
 const Parent = styled.div`
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 `
