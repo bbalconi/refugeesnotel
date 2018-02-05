@@ -29,9 +29,7 @@ const Mappy = compose(
         markers: [],
         onMapMounted: ref => {
           refs.map = ref;
-          console.log(this.state.markers.length != 0);
           if (this.state.markers.length > 0) {
-            console.log('this shouldnt run')
             const bounds = new google.maps.LatLngBounds();
             this.state.markers.map((marker) => {
               bounds.extend(new google.maps.LatLng(
@@ -71,7 +69,6 @@ const Mappy = compose(
             center: nextCenter,
             markers: nextMarkers,
           });
-          //refs.map.fitBounds(bounds);
         },
       })
     },
