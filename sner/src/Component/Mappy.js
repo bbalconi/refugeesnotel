@@ -27,6 +27,7 @@ const Mappy = compose(
           lat: 45.817348, lng: -110.929318
         },
         markers: [],
+        zoom: 10,
         onMapMounted: ref => {
           refs.map = ref;
           if (this.state.markers.length > 0) {
@@ -35,6 +36,12 @@ const Mappy = compose(
               bounds.extend(new google.maps.LatLng(
                 marker.position.lat, marker.position.lng
               ));
+              if (bounds.getNorthEast().equals(bounds.getSouthWest())) {
+                var extendPoint1 = new google.maps.LatLng(bounds.getNorthEast().lat() + 0.01, bounds.getNorthEast().lng() + 0.01);
+                var extendPoint2 = new google.maps.LatLng(bounds.getNorthEast().lat() - 0.01, bounds.getNorthEast().lng() - 0.01);
+                bounds.extend(extendPoint1);
+                bounds.extend(extendPoint2);
+              }
             });
             refs.map.fitBounds(bounds);
           }
@@ -101,6 +108,7 @@ const Mappy = compose(
     defaultMapTypeId={`terrain`}
     onMouseMove={(e) => props.getCoords(e)}
     onClick={() => props.newState()}
+    onRightClick={() => console.log(props)}
   >
     <SearchBox
       ref={props.onSearchBoxMounted}
