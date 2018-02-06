@@ -31,7 +31,7 @@ const Mappy = compose(
         onMapMounted: ref => {
           refs.map = ref;
           if (this.state.markers.length > 0) {
-            const bounds = new google.maps.LatLngBounds();
+            let bounds = new google.maps.LatLngBounds();
             this.state.markers.map((marker) => {
               bounds.extend(new google.maps.LatLng(
                 marker.position.lat, marker.position.lng
@@ -74,18 +74,12 @@ const Mappy = compose(
           const nextCenter = _.get(nextMarkers, '0.position', this.state.center);
           this.setState({
             center: nextCenter,
-            markers: nextMarkers,
           });
         },
       })
     },
     componentDidMount() {
       let coordArray = this.props.markerMaker();
-      let bounds = new google.maps.LatLngBounds();
-      coordArray.forEach((marker) => {
-        // console.log(marker);
-        // console.log(bounds);
-      })
       this.setState({
         markers: coordArray,
       })
@@ -108,7 +102,6 @@ const Mappy = compose(
     defaultMapTypeId={`terrain`}
     onMouseMove={(e) => props.getCoords(e)}
     onClick={() => props.newState()}
-    onRightClick={() => console.log(props)}
   >
     <SearchBox
       ref={props.onSearchBoxMounted}
@@ -138,8 +131,7 @@ const Mappy = compose(
       <Marker
         key={index}
         position={marker.position}
-        onClick={() => { marker.isOpen = !marker.isOpen }}
-        onRightClick={() => console.log(marker)}>
+        onClick={() => { marker.isOpen = !marker.isOpen }}>
         {marker.isOpen && (
           <InfoWindow
             onCloseClick={() => { marker.isOpen = !marker.isOpen }}
