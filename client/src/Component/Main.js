@@ -20,8 +20,8 @@ var Main = observer(class Main extends Component {
       latSend: 45.817,
       lngSend: -110.929,
       locationName: "Bridger Bowl, MT, USA",
-    }
-  }
+    };
+  };
 
   getCoords(e) {
     let latty = e.latLng.lat();
