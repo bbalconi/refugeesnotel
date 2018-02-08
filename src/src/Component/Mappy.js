@@ -131,7 +131,7 @@ const Mappy = compose(
       <Marker
         key={index}
         position={marker.position}
-        onClick={() => { marker.isOpen = !marker.isOpen }}>
+        onClick={() => {marker.isOpen = !marker.isOpen}}>
         {marker.isOpen && (
           <InfoWindow
             onCloseClick={() => { marker.isOpen = !marker.isOpen }}

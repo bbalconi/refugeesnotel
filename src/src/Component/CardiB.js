@@ -95,9 +95,11 @@ var CardiB = observer(class CardiB extends Component {
     let storeArray = this.props.snowStore.weather;
     let coordArray = [];
     storeArray.forEach((item) => {
-      let coordObject = { position: {
-        lat: item.locationObject.latitude, lng: item.locationObject.longitude
-      }, isOpen: true, name: item.locationName};
+      let coordObject = {
+        position: {
+          lat: item.locationObject.latitude, lng: item.locationObject.longitude
+        }, isOpen: true, name: item.locationName
+      };
       coordArray.push(coordObject);
     });
     return coordArray;
