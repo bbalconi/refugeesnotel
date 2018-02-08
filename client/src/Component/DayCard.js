@@ -18,14 +18,14 @@ export default class DayCard extends Component {
     let d = new Date();
     let dayName = days[d.getDay() + index];
     return dayName
-  }
+  };
 
   dateConverter(day, index) {
     let d = new Date();
     let dd = d.getDate()+index;
     let mm = d.getMonth()+1;
     return `${mm}/${dd}`
-  }
+  };
 
   iconRender(input) {
     let icon = input.toUpperCase();
