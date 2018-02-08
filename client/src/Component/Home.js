@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
-import CardiB from '../Component/CardiB';
+import Main from '../Component/Main';
 import WeatherCard from '../Component/WeatherCard';
 import styled, { css } from 'styled-components';
 var axios = require('axios')
@@ -21,7 +21,7 @@ var Home = observer(class Home extends Component {
     if (this.props.snowStore.loaded == true) {
     return (
       <Parent>
-        <CardiB />
+        <Main />
       </Parent>
     )} else {
       return(<div></div>)

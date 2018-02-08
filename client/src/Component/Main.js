@@ -6,7 +6,7 @@ import Mappy from './Mappy';
 import WeatherCard from '../Component/WeatherCard';
 var axios = require('axios')
 
-var CardiB = observer(class CardiB extends Component {
+var Main = observer(class Main extends Component {
   constructor() {
     super()
     this.getCoords = this.getCoords.bind(this);
@@ -178,4 +178,4 @@ border: 2px solid #ba7284;
 
 
 
-export default withRouter(inject('snowStore')(CardiB));
+export default withRouter(inject('snowStore')(Main));
