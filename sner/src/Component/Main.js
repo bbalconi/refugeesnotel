@@ -58,7 +58,7 @@ var Main = observer(class Main extends Component {
         this.setState({
           locationName: res.data.results["1"].formatted_address
         })
-      } else if (res.data.status = "ZERO_RESULTS") {
+      } else if (res.data.status === "ZERO_RESULTS") {
         this.setState({
           locationName: ""
         })
@@ -72,11 +72,11 @@ var Main = observer(class Main extends Component {
 
   sendData() {
     return new Promise((resolve, reject) => {
-      let geolocation = "";
       axios.post('/darthVader', {
         lat: this.state.latSend,
         lng: this.state.lngSend,
       }).then((res) => {
+        console.log(res.data);
         let locationData = res.data;
         axios.post('/saveLocation', {
           locationObject: locationData,

@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { withRouter } from 'react-router-dom';
 import Main from '../Component/Main';
-import WeatherCard from '../Component/WeatherCard';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 var axios = require('axios')
 
 var Home = observer(class Home extends Component {
@@ -18,7 +17,7 @@ var Home = observer(class Home extends Component {
   };
 
   render() {
-    if (this.props.snowStore.loaded == true) {
+    if (this.props.snowStore.loaded === true) {
     return (
       <Parent>
         <Main />
@@ -27,8 +26,7 @@ var Home = observer(class Home extends Component {
       return(<div></div>)
     };
   };
-})
-;
+});
 const Parent = styled.div`
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 `

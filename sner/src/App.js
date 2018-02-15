@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
 import { Provider } from "mobx-react";
 import Home from './Component/Home';
-import Navbar from './Navbar/Navbar';
 import SnowStore from './Stores/SnowStore';
 
 class App extends Component {

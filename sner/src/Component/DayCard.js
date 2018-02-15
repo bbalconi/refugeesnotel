@@ -57,8 +57,8 @@ export default class DayCard extends Component {
 
   tempLowTime(seconds) {
     let duration = seconds * 1000;
-    let minutes = parseInt((duration/(1000*60))%60)
-      , hours = parseInt((duration/(1000*60*60))%24);
+    let minutes = parseInt((duration/(1000*60))%60, 10)
+      , hours = parseInt((duration/(1000*60*60))%24, 10);
     hours = (hours < 10) ? "0" + hours : hours;
     minutes = (minutes < 10) ? "0" + minutes : minutes;
 
@@ -70,7 +70,6 @@ export default class DayCard extends Component {
     let highRound = Math.round(highTemp);
     let lowTemp = day.apparentTemperatureLow;
     let lowRound = Math.round(lowTemp);
-    let time = this.tempLowTime(day.apparentTemperatureHighTime)
     let windDirection = `wi wi-wind from-${day.windBearing}-deg`
     let windSpeed = Math.round(day.windSpeed);
     let windGust = Math.round(day.windGust);

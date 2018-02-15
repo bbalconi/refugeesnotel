@@ -49,8 +49,9 @@ const Mappy = compose(
         onBoundsChanged: () => {
           this.setState({
             bounds: refs.map.getBounds(),
-            center: refs.map.getCenter(),
+            // center: refs.map.getCenter(),
           })
+          console.log(this.state.bounds);
         },
         onSearchBoxMounted: ref => {
           refs.searchBox = ref;
