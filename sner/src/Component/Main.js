@@ -21,6 +21,7 @@ var Main = observer(class Main extends Component {
       latSend: 45.817,
       lngSend: -110.929,
       locationName: "Bridger Bowl, MT, USA",
+      stateHasChanged: false
     };
   };
 
@@ -50,6 +51,9 @@ var Main = observer(class Main extends Component {
   }
 
   newState(e) {
+    if (this.state.stateHasChanged === false) {
+      this.setState({ stateHasChanged: true })
+    }
     this.setState({
       latSend: this.state.lat,
       lngSend: this.state.lng
@@ -93,27 +97,29 @@ var Main = observer(class Main extends Component {
   };
 
   markerMaker() {
-      let storeArray = this.props.snowStore.weather;
-      let coordArray = [];
-      storeArray.forEach((item) => {
-        let coordObject = {
-          position: {
-            lat: item.locationObject.latitude,
-            lng: item.locationObject.longitude
-          },
-          name: item.locationName,
-        };
-        coordArray.push(coordObject);
-      });
-      return coordArray;
+    let storeArray = this.props.snowStore.weather;
+    let coordArray = [];
+    storeArray.forEach((item) => {
+      let coordObject = {
+        position: {
+          lat: item.locationObject.latitude,
+          lng: item.locationObject.longitude
+        },
+        name: item.locationName,
+      };
+      coordArray.push(coordObject);
+    });
+    return coordArray;
   };
 
-  clickedMarker(){
-    let clickedObject = {
+  clickedMarker() {
+    if (this.state.stateHasChanged) {
+      let clickedObject = {
         lat: this.state.latSend,
         lng: this.state.lngSend
-    };
-    return clickedObject
+      };
+      return clickedObject
+    }
   }
 
   render() {

@@ -157,6 +157,7 @@ class LocationMarker extends Component {
     let marker = this.props.marker;
     return(
       <Marker
+      icon={{url:`http://maps.google.com/mapfiles/ms/icons/red-dot.png`}}
       position={marker.position}
       onClick={this.toggleOpen}>
       {this.state.isOpen && (
