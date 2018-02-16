@@ -48,7 +48,7 @@ var Main = observer(class Main extends Component {
     });
   }
 
-  newState() {
+  newState(e) {
     this.setState({
       latSend: this.state.lat,
       lngSend: this.state.lng
@@ -80,7 +80,7 @@ var Main = observer(class Main extends Component {
         let locationData = res.data;
         axios.post('/saveLocation', {
           locationObject: locationData,
-          locationName: this.state.locationName
+          locationName: this.state.locationName,
         }).then((res) => {
           axios.get('/retrieveSavedLocations').then((res) => {
             this.props.snowStore.weather = res.data;

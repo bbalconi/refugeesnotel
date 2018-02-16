@@ -32,7 +32,7 @@ const Mappy = compose(
           refs.map = ref;
           if (this.state.markers.length > 0) {
             let bounds = new google.maps.LatLngBounds();
-            this.state.markers.map((marker) => {
+            this.state.markers.forEach((marker) => {
               bounds.extend(new google.maps.LatLng(
                 marker.position.lat, marker.position.lng
               ));
@@ -100,7 +100,7 @@ const Mappy = compose(
     onBoundsChanged={props.onBoundsChanged}
     defaultMapTypeId={`terrain`}
     onMouseMove={(e) => props.getCoords(e)}
-    onClick={() => props.newState()}
+    onClick={(e) => props.newState(e)}
   >
     <SearchBox
       ref={props.onSearchBoxMounted}

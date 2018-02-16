@@ -52,7 +52,8 @@ app.post('/darthVader', (req, res, next) => {
 app.post('/saveLocation', (req, res, next) => {
   let location = new Location();
   location.locationObject = req.body.locationObject,
-  location.locationName = req.body.locationName
+  location.locationName = req.body.locationName,
+  location.isEditable = false;
   location.save((err, newLocation) => {
     if (err) { next(err) }
     else { res.json(newLocation) };
@@ -70,6 +71,16 @@ app.put('/updateCard', (req, res, next) => {
   let newData = req.body.newData;
     Location.findByIdAndUpdate(id, {$set: {locationObject: newData}}, (err, res) => {
         if (err) { console.log(err) }
+    });
+    res.send('Success');
+});
+
+app.put('/updateLocationName', (req, res, next) => {
+  console.log(req.body)
+  let id = req.body._id;
+  let newLocationName = req.body.newLocationName;
+    Location.findByIdAndUpdate(id, {$set: {locationName: newLocationName}}, (err, res) => {
+      if (err) {console.log(err)}
     });
     res.send('Success');
 });
