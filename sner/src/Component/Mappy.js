@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import {
   withScriptjs,
   withGoogleMap,
@@ -125,19 +125,39 @@ const Mappy = compose(
           textOverflow: `ellipses`,
         }}
       />
-    </SearchBox>
+    </SearchBox>  
     {props.markers.map((marker, index) =>
-      <Marker
-        key={index}
-        position={marker.position}
-        onClick={() => {marker.isOpen = !marker.isOpen}}>
-        {marker.isOpen && (
-          <InfoWindow
-            onCloseClick={() => { marker.isOpen = !marker.isOpen }}
-          ><div>{marker.name}</div></InfoWindow>)}
-      </Marker>
+      <LocationMarker marker={marker} key={index}/>
     )}
   </GoogleMap>
   );
 
 export default Mappy;
+
+class LocationMarker extends Component {
+  constructor(){
+    super()
+    this.toggleOpen = this.toggleOpen.bind(this)
+    this.state = {
+      isOpen: true
+    }
+  }
+
+  toggleOpen(){
+    this.setState({ isOpen: !this.state.isOpen})
+  }
+
+  render(){
+    let marker = this.props.marker;
+    return(
+      <Marker
+      position={marker.position}
+      onClick={this.toggleOpen}>
+      {this.state.isOpen && (
+        <InfoWindow
+          onCloseClick={this.toggleOpen}
+        ><div>{marker.name}</div></InfoWindow>)}
+    </Marker>
+    )
+  }
+}

@@ -97,8 +97,10 @@ var Main = observer(class Main extends Component {
     storeArray.forEach((item) => {
       let coordObject = {
         position: {
-          lat: item.locationObject.latitude, lng: item.locationObject.longitude
-        }, isOpen: true, name: item.locationName
+          lat: item.locationObject.latitude, 
+          lng: item.locationObject.longitude
+        }, 
+        name: item.locationName,
       };
       coordArray.push(coordObject);
     });

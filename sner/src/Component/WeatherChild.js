@@ -15,11 +15,6 @@ var WeatherChild = observer(class WeatherCard extends Component {
     }
   }
 
-  cardGenerator(location, index) {
-    let card = location.locationObject;
-
-  }
-
   editToggle(location) {
     location.isEditable = !location.isEditable;
   }
@@ -87,7 +82,7 @@ var WeatherChild = observer(class WeatherCard extends Component {
         <LocationCard>
           <TopLine><ButtonWrap>
             <Refresh onClick={() => this.refreshCard(location._id, card)}>
-              <i className="material-icons" style={{ color: 'white', fontWeight: 'bold', marginTop: 3 }}>autorenew</i>
+              <i className="material-icons md-8" style={{ color: 'white', fontWeight: 'bold', marginTop: 3 }}>autorenew</i>
             </Refresh>
             <Delete onClick={() => this.deleteCard(location._id)}>X</Delete></ButtonWrap>
             <LocationTitle>
