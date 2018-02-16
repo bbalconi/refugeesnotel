@@ -14,6 +14,7 @@ var Main = observer(class Main extends Component {
     this.sendData = this.sendData.bind(this);
     this.markerCoords = this.markerCoords.bind(this);
     this.markerMaker = this.markerMaker.bind(this);
+    this.clickedMarker = this.clickedMarker.bind(this);
     this.state = {
       lat: 0,
       lng: 0,
@@ -87,25 +88,33 @@ var Main = observer(class Main extends Component {
           })
         })
       });
-      resolve();
+      resolve()
     });
   };
 
   markerMaker() {
-    let storeArray = this.props.snowStore.weather;
-    let coordArray = [];
-    storeArray.forEach((item) => {
-      let coordObject = {
-        position: {
-          lat: item.locationObject.latitude, 
-          lng: item.locationObject.longitude
-        }, 
-        name: item.locationName,
-      };
-      coordArray.push(coordObject);
-    });
-    return coordArray;
+      let storeArray = this.props.snowStore.weather;
+      let coordArray = [];
+      storeArray.forEach((item) => {
+        let coordObject = {
+          position: {
+            lat: item.locationObject.latitude,
+            lng: item.locationObject.longitude
+          },
+          name: item.locationName,
+        };
+        coordArray.push(coordObject);
+      });
+      return coordArray;
   };
+
+  clickedMarker(){
+    let clickedObject = {
+        lat: this.state.latSend,
+        lng: this.state.lngSend
+    };
+    return clickedObject
+  }
 
   render() {
     return (
@@ -116,6 +125,7 @@ var Main = observer(class Main extends Component {
           markerCoords={this.markerCoords}
           state={this.state}
           markerMaker={this.markerMaker}
+          clickedMarker={this.clickedMarker}
         />
         <TextWrap>
           <CoordWrap>

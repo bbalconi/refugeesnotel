@@ -27,6 +27,7 @@ const Mappy = compose(
           lat: 45.817348, lng: -110.929318
         },
         markers: [],
+        clickedMarker: null,
         zoom: 10,
         onMapMounted: ref => {
           refs.map = ref;
@@ -84,6 +85,10 @@ const Mappy = compose(
       })
     },
     componentWillReceiveProps() {
+      let clickedMarker = this.props.clickedMarker();
+      this.setState({
+        clickedMarker
+      })
       let coordArray = this.props.markerMaker();
       this.setState({
         markers: coordArray,
@@ -129,6 +134,7 @@ const Mappy = compose(
     {props.markers.map((marker, index) =>
       <LocationMarker marker={marker} key={index}/>
     )}
+    <ClickedMarker clickedMarker={props.clickedMarker}/>
   </GoogleMap>
   );
 
@@ -159,5 +165,24 @@ class LocationMarker extends Component {
         ><div>{marker.name}</div></InfoWindow>)}
     </Marker>
     )
+  }
+}
+
+class ClickedMarker extends Component {
+  constructor(){
+    super()
+  }
+
+  render(){
+    let marker = this.props.clickedMarker
+    if (marker) {
+    return(
+      <Marker
+      icon={{url:`http://maps.google.com/mapfiles/ms/icons/blue-dot.png`}}
+      position={{lat: marker.lat, lng: marker.lng}}/>
+    )
+  } else {
+    return(<div></div>)
+  }
   }
 }
