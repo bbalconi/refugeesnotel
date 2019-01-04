@@ -81,9 +81,9 @@ var WeatherChild = observer(class WeatherCard extends Component {
       return (
         <LocationCard>
           <TopLine><ButtonWrap>
-            <Refresh onClick={() => this.refreshCard(location._id, card)}>
+            {/* <Refresh onClick={() => this.refreshCard(location._id, card)}>
               <i className="material-icons md-8" style={{ color: 'white', fontWeight: 'bold', marginTop: 3 }}>autorenew</i>
-            </Refresh>
+            </Refresh> */}
             <Delete onClick={() => this.deleteCard(location._id)}>X</Delete></ButtonWrap>
             <LocationTitle>
               <Input type="text" placeholder={location.locationName} onChange={this.updateLocationName} value={this.state.locationName} />
@@ -101,9 +101,9 @@ var WeatherChild = observer(class WeatherCard extends Component {
       return (
         <LocationCard>
           <TopLine><ButtonWrap>
-            <Refresh onClick={() => this.refreshCard(location._id, card)}>
+            {/* <Refresh onClick={() => this.refreshCard(location._id, card)}>
               <i className="material-icons" style={{ color: 'white', fontWeight: 'bold', marginTop: 3 }}>autorenew</i>
-            </Refresh>
+            </Refresh> */}
             <Delete onClick={() => this.deleteCard(location._id)}>X</Delete></ButtonWrap>
             <LocationTitle><Location>{location.locationName}</Location>
               <EditButton onClick={() => this.editToggle(location)}>
