@@ -1,32 +1,55 @@
 import React, { Component } from 'react';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 const axios = require('axios');
 
 class LandingPage extends Component {
     constructor(props) {
         super(props);
+        this.signIn = this.signIn.bind(this);
+        this.state = {
+          username: '',
+          password: '',
+          error: false
+        }
+    }
 
+    username(e){this.setState({username: e.target.value})}
+    password(e){this.setState({password: e.target.value})}
+
+    signIn(){
+      new Promise((res, rej) => {
+      axios.post('/login', {
+        username: this.state.username,
+        password: this.state.password
+      }).then((res) => {
+        res.data ? console.log('fkc') : this.setState({error:true})
+        })
+      })
     }
 
     render() {
+      const error = this.state.error
         return (
             <LandingDiv>
                 <TextWrap>
                     <Text>sign in:</Text>
                 </TextWrap>
                 <InputWrapper>
-                    <Input placeholder='username' />
+                    <Input placeholder='username' onChange={(e) => this.username(e)} value={this.state.username}/>
                 </InputWrapper>
                 <InputWrapper bottom>
-                    <Input type='password' placeholder='password' />
+                    <Input type='password' placeholder='password' onChange={(e) => this.password(e)} value={this.state.password}/>
                 </InputWrapper>
                 <ButtonWrap>
-                        <Button>//</Button>
+                        <Button onClick={this.signIn}>//</Button>
                     </ButtonWrap>
                 <TextWrap bottom>
                     <Text bottom><Link to='signup' style={{color:'black'}}>sign up</Link></Text>
                 </TextWrap>
+                <Error>
+                    {error ? <Text error>auth failed</Text> : <div></div>}
+                </Error>
             </LandingDiv>
         );
     }
@@ -80,6 +103,12 @@ const Text = styled.p`
         font-size: .75em;
         text-align: right;
   `}
+
+  ${props => props.error && css`
+        color: red;
+        font-size: .5em;
+        text-align: right;
+  `}
 `
 
 const InputWrapper = styled.div`
@@ -96,6 +125,15 @@ const Input = styled.input`
     display: block;
     margin-left: auto;
     margin-right: auto;
+`
+
+const Error = styled.div`
+    height: 10.3%;
+    width: 10%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 1vh;
 `
 
 export default LandingPage;

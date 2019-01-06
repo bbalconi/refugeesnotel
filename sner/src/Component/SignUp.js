@@ -19,9 +19,7 @@ class SignUp extends Component {
     }
 
     username(e){this.setState({username: e.target.value})}
-
     password(e){this.setState({password: e.target.value})}
-
     confirm(e){this.setState({confirm: e.target.value})}
 
     signUp(){

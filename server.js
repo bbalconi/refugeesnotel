@@ -40,6 +40,7 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   app.use(express.static('public'));
 }
+
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(expressSession({
@@ -50,15 +51,29 @@ app.use(expressSession({
 app.use(passport.initialize());
 app.use(passport.session());
 
+passport.use(new LocalStrategy((username, password, done) => {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      if (!user.verifyPassword(password)) { return done(null, false); }
+      return done(null, user);
+    });
+  }
+));
+
+app.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user) => {
+    err ? res.json(err) : res.json(user)
+  }) (req, res, next);
+})
+
+
 app.post('/darthVader', (req, res, next) => {
   const result = darksky
     .coordinates({ lat: req.body.lat, lng: req.body.lng })
-    .exclude('minutely')
-    .get()
-    .then((data) => {
+    .exclude('minutely').get().then((data) => {
       res.json(data);
-    })
-    .catch(console.log);
+    }).catch(console.log);
 })
 
 app.post('/saveLocation', (req, res, next) => {
