@@ -28,7 +28,6 @@ class SignUp extends Component {
         this.state.username && this.state.password && this.state.confirm ?
         this.state.confirm == this.state.password ?
             new Promise((res, rej) => {
-                console.log('isthison')
             axios.post('/saveUser', {
                 username: this.state.username,
                 password: this.state.password
@@ -41,12 +40,7 @@ class SignUp extends Component {
     }
 
     render() {
-        const { match, location, history } = this.props;
-        console.log(this.props);
-        const error = this.state.error;
-        const form = this.state.form;
-        const duplicate = this.state.duplicate
-        const redirect = this.state.redirect
+        const [error, form, duplicate, redirect] = [this.state.error, this.state.form, this.state.duplicate, this.state.redirect]
         return (
             <LandingDiv>
                 <TextWrap>
@@ -120,6 +114,15 @@ const InputWrapper = styled.div`
 
 const Button = styled.button`
     float: right;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    width: 32px;
+    height: 30px;
+    background: #ba7284;
+    font-size: 1.25em;
+    border: 2px solid #ba7284;
 `
 
 const Input = styled.input`
@@ -136,7 +139,7 @@ const Error = styled.div`
     display: block;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 5vh;
+    margin-top: 8vh;
 `
 
 export default SignUp;

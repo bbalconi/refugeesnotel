@@ -34,8 +34,6 @@ var Home = observer(class Home extends Component {
             })
           })
         });
-        // this.props.snowStore.weather = res.data;
-        // this.props.snowStore.loaded = true;
       });
     });
   };

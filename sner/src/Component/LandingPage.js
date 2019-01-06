@@ -49,6 +49,15 @@ const ButtonWrap = styled.div`
 
 const Button = styled.button`
     float: right;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    border-radius: 3px;
+    color: white;
+    width: 32px;
+    height: 30px;
+    background: #ba7284;
+    font-size: 1.25em;
+    border: 2px solid #ba7284;
 `
 
 const TextWrap = styled.div`
@@ -56,7 +65,7 @@ const TextWrap = styled.div`
     margin-left: auto;
     margin-right: auto;
     padding-top: 8vh;
-    margin-top: -1vh;
+    margin-top: 3vh;
     width: 10vw;
 
     ${props => props.bottom && css`

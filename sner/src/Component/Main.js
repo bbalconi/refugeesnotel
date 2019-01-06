@@ -168,7 +168,8 @@ flex-direction: row;
 justify-content: space-between;`
 
 const CoordWrap = styled.div`
-flex: 1`
+flex: 1
+`
 
 const Text = styled.h1`
   color: #54b7e0;
@@ -180,7 +181,8 @@ const Text = styled.h1`
 `}`
 
 const ButtonRight = styled.div`
-float: right;`
+float: right;
+`
 
 const DarkSkyButton = styled.button`
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
