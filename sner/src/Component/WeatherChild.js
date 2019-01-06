@@ -10,6 +10,7 @@ var WeatherChild = observer(class WeatherCard extends Component {
     super();
     this.updateLocationName = this.updateLocationName.bind(this);
     this.saveNewLocation = this.saveNewLocation.bind(this);
+    this.minimize = this.minimize.bind(this);
     this.state = {
       locationName: ""
     }
@@ -74,6 +75,10 @@ var WeatherChild = observer(class WeatherCard extends Component {
     })
   }
 
+  minimize(){
+    console.log('clickclack')
+  }
+
   render() {
     let location = this.props.locationProps;
     let card = this.props.locationProps.locationObject
@@ -101,9 +106,9 @@ var WeatherChild = observer(class WeatherCard extends Component {
       return (
         <LocationCard>
           <TopLine><ButtonWrap>
-            {/* <Refresh onClick={() => this.refreshCard(location._id, card)}>
+            <Refresh onClick={() => this.minimize(location._id, card)}>
               <i className="material-icons" style={{ color: 'white', fontWeight: 'bold', marginTop: 3 }}>autorenew</i>
-            </Refresh> */}
+            </Refresh>
             <Delete onClick={() => this.deleteCard(location._id)}>X</Delete></ButtonWrap>
             <LocationTitle><Location>{location.locationName}</Location>
               <EditButton onClick={() => this.editToggle(location)}>
