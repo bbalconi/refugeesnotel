@@ -10,6 +10,11 @@ const DarkSky = require('dark-sky')
 let mongoose = require('mongoose');
 let uriUtil = require('mongodb-uri');
 let Location = require('./models/Location');
+let User = require('./models/Users');
+var expressSession = require("express-session");
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+var passwordHash = require("password-hash");
 require('dotenv').config();
 
 let mongodbUri = `mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD}@ds223738.mlab.com:23738/refugeesnotel`;
@@ -37,6 +42,13 @@ if (process.env.NODE_ENV === 'production') {
 }
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressSession({
+  secret: "bbowlslidin",
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.post('/darthVader', (req, res, next) => {
   const result = darksky
@@ -59,6 +71,16 @@ app.post('/saveLocation', (req, res, next) => {
     else { res.json(newLocation) };
   });
 });
+
+app.post('/saveUser', (req, res, next) => {
+  let user = new User();
+  user.username = req.body.username
+  user.password = req.body.password
+  console.log(user);
+  user.save((err, user) => {
+    err ? res.json({duplicate:true}) : res.json(user)
+  })
+})
 
 app.get('/retrieveSavedLocations', (req, res, next) => {
   Location.find((req, locations) => {

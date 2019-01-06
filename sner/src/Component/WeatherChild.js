@@ -214,7 +214,7 @@ font-family: Font Awesome 5 Solid;
 
 const LocationTitle = styled.div`
 display:flex;
-flex-mode: wrap;`
+`
 
 const Input = styled.input`
 width: 500px;
