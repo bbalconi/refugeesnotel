@@ -5,7 +5,6 @@ import Home from './Component/Home';
 import SignUp from './Component/SignUp';
 import LandingPage from './Component/LandingPage'
 import SnowStore from './Stores/SnowStore';
-import createHistory from 'history/createBrowserHistory'
 
 class App extends Component {
   render() {

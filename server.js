@@ -61,6 +61,19 @@ passport.use(new LocalStrategy((username, password, done) => {
   }
 ));
 
+passport.serializeUser((user, done) => {
+  done(null, user._id);
+})
+
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    if (err) {
+    } else {
+      done(null, user);
+    }
+  })
+})
+
 app.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
     err ? res.json(err) : res.json(user)

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { withRouter, Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 const axios = require('axios');
 
@@ -24,7 +24,7 @@ class SignUp extends Component {
 
     signUp(){
         this.state.username && this.state.password && this.state.confirm ?
-        this.state.confirm == this.state.password ?
+        this.state.confirm === this.state.password ?
             new Promise((res, rej) => {
             axios.post('/saveUser', {
                 username: this.state.username,
