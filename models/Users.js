@@ -6,5 +6,10 @@ var UserSchema = new mongoose.Schema({
   password: {type: String, set: function(password){
     return passwordHash.generate(password)
   }},
+  locations: [{
+    locationObject: Object,
+    locationName: String,
+    isEditable: Boolean
+  }]
 });
 module.exports = mongoose.model('User', UserSchema);

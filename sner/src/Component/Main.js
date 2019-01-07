@@ -76,14 +76,16 @@ var Main = observer(class Main extends Component {
   };
 
   sendData() {
+    console.log(this.props.snowStore)
     return new Promise((resolve, reject) => {
       axios.post('/darthVader', {
         lat: this.state.latSend,
         lng: this.state.lngSend,
       }).then((res) => {
-        console.log(res.data);
+        console.log(this.props.snowStore.user);
         let locationData = res.data;
         axios.post('/saveLocation', {
+          user: this.props.snowStore.user,
           locationObject: locationData,
           locationName: this.state.locationName,
         }).then((res) => {

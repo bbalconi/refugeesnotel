@@ -53,9 +53,10 @@ app.use(passport.session());
 
 passport.use(new LocalStrategy((username, password, done) => {
     User.findOne({ username: username }, function (err, user) {
+      console.log(user)
       if (err) { return done(err); }
       if (!user) { return done(null, false); }
-      if (!user.verifyPassword(password)) { return done(null, false); }
+      if (!passwordHash.verify(password, user.password)) { return done(null, false); }
       return done(null, user);
     });
   }
@@ -76,7 +77,9 @@ passport.deserializeUser(function (id, done) {
 
 app.post('/login', (req, res, next) => {
   passport.authenticate('local', (err, user) => {
-    err ? res.json(err) : res.json(user)
+    err ? res.json(err) : req.logIn(user, (err) => {
+      err ? res.json('err') : res.json(user)
+    })
   }) (req, res, next);
 })
 
@@ -90,6 +93,7 @@ app.post('/darthVader', (req, res, next) => {
 })
 
 app.post('/saveLocation', (req, res, next) => {
+  console.log(req.body)
   let location = new Location();
   location.locationObject = req.body.locationObject,
   location.locationName = req.body.locationName,
