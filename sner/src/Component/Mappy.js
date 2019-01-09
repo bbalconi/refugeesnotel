@@ -170,9 +170,6 @@ class LocationMarker extends Component {
 }
 
 class ClickedMarker extends Component {
-  constructor(){
-    super()
-  }
 
   render(){
     let marker = this.props.clickedMarker

@@ -10,6 +10,11 @@ const DarkSky = require('dark-sky')
 let mongoose = require('mongoose');
 let uriUtil = require('mongodb-uri');
 let Location = require('./models/Location');
+let User = require('./models/Users');
+var expressSession = require("express-session");
+var passport = require("passport");
+var LocalStrategy = require("passport-local").Strategy;
+var passwordHash = require("password-hash");
 require('dotenv').config();
 
 let mongodbUri = `mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD}@ds223738.mlab.com:23738/refugeesnotel`;
@@ -35,58 +40,112 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   app.use(express.static('public'));
 }
+
 app.use(bodyParser.json({ type: 'application/json' }));
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(expressSession({
+  secret: "bbowlslidin",
+  resave: true,
+  saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy((username, password, done) => {
+    User.findOne({ username: username }, function (err, user) {
+      if (err) { return done(err); }
+      if (!user) { return done(null, false); }
+      if (!passwordHash.verify(password, user.password)) { return done(null, false); }
+      return done(null, user);
+    });
+  }
+));
+
+passport.serializeUser((user, done) => {
+  done(null, user._id);
+})
+
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    if (err) {
+    } else {
+      done(null, user);
+    }
+  })
+})
+
+app.post('/login', (req, res, next) => {
+  passport.authenticate('local', (err, user) => {
+    err ? res.json(err) : req.logIn(user, (err) => {
+      err ? res.json('err') : res.json(user)
+    })
+  }) (req, res, next);
+})
+
 
 app.post('/darthVader', (req, res, next) => {
   const result = darksky
     .coordinates({ lat: req.body.lat, lng: req.body.lng })
-    .exclude('minutely')
-    .get()
-    .then((data) => {
+    .exclude('minutely').get().then((data) => {
       res.json(data);
-    })
-    .catch(console.log);
+    }).catch(console.log);
 })
 
 app.post('/saveLocation', (req, res, next) => {
-  let location = new Location();
-  location.locationObject = req.body.locationObject,
-  location.locationName = req.body.locationName,
-  location.isEditable = false;
-  location.save((err, newLocation) => {
-    if (err) { next(err) }
-    else { res.json(newLocation) };
-  });
+  User.findByIdAndUpdate({_id: req.body._id}, {
+    $push: {
+      locations: {
+        locationObject: req.body.locationObject,
+        locationName: req.body.locationName,
+        isEditable: false
+      } } }, {new:true}, (req, response) => {
+        res.json('Success')
+      })
 });
 
-app.get('/retrieveSavedLocations', (req, res, next) => {
-  Location.find((req, locations) => {
-    res.json(locations)
+app.post('/saveUser', (req, res, next) => {
+  let user = new User();
+  user.username = req.body.username
+  user.password = req.body.password
+  user.save((err, user) => {
+    err ? res.json({duplicate:true}) : res.json(user)
+  })
+})
+
+app.post('/retrieveSavedLocations', (req, res, next) => {
+  User.findById(req.body.id, (err, user) =>{
+    res.json(user.locations)
   })
 })
 
 app.put('/updateCard', (req, res, next) => {
-  let id = req.body._id;
-  let newData = req.body.newData;
-    Location.findByIdAndUpdate(id, {$set: {locationObject: newData}}, (err, res) => {
-        if (err) { console.log(err) }
-    });
-    res.send('Success');
+  User.updateOne(
+    {
+    _id: req.body.user_id,
+    locations: { $elemMatch: {_id: { $eq: req.body._id } } } 
+    },
+    { $set: { 'locations.$.locationObject' : req.body.newData}},
+    (err, res) => {
+      if (err) { console.log(err) }
+    }); res.send('Success')
 });
 
 app.put('/updateLocationName', (req, res, next) => {
-  console.log(req.body)
-  let id = req.body._id;
-  let newLocationName = req.body.newLocationName;
-    Location.findByIdAndUpdate(id, {$set: {locationName: newLocationName}}, (err, res) => {
+    User.updateOne({
+      _id: req.body.user_id,
+      locations: { $elemMatch: {_id: { $eq: req.body._id } } } 
+    }, { $set: { 'locations.$.locationName': req.body.newLocationName}},
+      (err, res) => {
       if (err) {console.log(err)}
     });
     res.send('Success');
 });
 
 app.post('/deleteCard', (req, res, next) => {
-  Location.findOneAndRemove({ _id: req.body.id }, (err, deleted) => {
+  User.update(
+    { _id: req.body.user_id },
+    { $pull: { locations: { _id: req.body.id } } },
+    { safe: true }, (err, deleted) => {
     let response = {
       message: "Location deleted",
       id: deleted._id

@@ -81,13 +81,15 @@ var Main = observer(class Main extends Component {
         lat: this.state.latSend,
         lng: this.state.lngSend,
       }).then((res) => {
-        console.log(res.data);
         let locationData = res.data;
         axios.post('/saveLocation', {
+          _id: this.props.snowStore._id,
           locationObject: locationData,
           locationName: this.state.locationName,
         }).then((res) => {
-          axios.get('/retrieveSavedLocations').then((res) => {
+          axios.post('/retrieveSavedLocations', {
+            id: this.props.snowStore._id
+          }).then((res) => {
             this.props.snowStore.weather = res.data;
           })
         })
@@ -168,7 +170,8 @@ flex-direction: row;
 justify-content: space-between;`
 
 const CoordWrap = styled.div`
-flex: 1`
+flex: 1
+`
 
 const Text = styled.h1`
   color: #54b7e0;
@@ -180,7 +183,8 @@ const Text = styled.h1`
 `}`
 
 const ButtonRight = styled.div`
-float: right;`
+float: right;
+`
 
 const DarkSkyButton = styled.button`
 font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
