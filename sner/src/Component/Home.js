@@ -15,8 +15,12 @@ var Home = observer(class Home extends Component {
   
 
   componentDidMount() {
+    let loggedUser = this.props.snowStore.user
+    if (loggedUser){
     return new Promise((resolve, reject) => {
-      axios.get('/retrieveSavedLocations').then((res) => {
+      axios.post('/retrieveSavedLocations', {
+        id: this.props.snowStore._id
+      }).then((res) => {
         if (res.data.length) {
         let grabNew = res.data;
         grabNew.forEach(element => {
@@ -30,20 +34,25 @@ var Home = observer(class Home extends Component {
             lng: grabNewCoords.lng
           }).then((res)=>{
             axios.put('/updateCard', {
+              user_id: this.props.snowStore._id,
               _id: grabNewCoords.id,
               newData: res.data
             }).then((res) => {
               if (res.data === "Success") {
-                axios.get('/retrieveSavedLocations').then((res) => {
+                axios.post('/retrieveSavedLocations', {
+                  id: this.props.snowStore._id
+                }).then((res) => {
                   this.props.snowStore.weather = res.data;
                   this.props.snowStore.loaded = true;
                 })}})})});
       } else {
-        console.log('?')
         this.props.snowStore.loaded = true;
       }
       });
-    });
+    })
+  } else {
+    this.setState({loggedIn:false});
+  }
   } 
   
   render() {

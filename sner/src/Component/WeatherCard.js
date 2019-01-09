@@ -6,6 +6,7 @@ import WeatherChild from './WeatherChild';
 var WeatherCard = observer(class WeatherCard extends Component {
 
   cardGenerator(locationProps, index) {
+    console.log(locationProps)
     return(<WeatherChild key={index} locationProps={locationProps}/>)
   }
 

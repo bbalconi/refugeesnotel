@@ -21,10 +21,9 @@ var LandingPage = observer(class LandingPage extends Component {
     password(e){this.setState({password: e.target.value})}
 
     success(e){
-        this.setState({redirect:true});
-        console.log(e, this.state)
         this.props.snowStore.user = e.username;
         this.props.snowStore._id = e._id
+        this.setState({redirect:true});
     }   
 
     signIn(){
@@ -40,7 +39,6 @@ var LandingPage = observer(class LandingPage extends Component {
 
     render() {
       const [error, redirect] = [this.state.error, this.state.redirect]
-      console.log(this.props.snowStore.user)
         return (
             <LandingDiv>
                 <TextWrap>
