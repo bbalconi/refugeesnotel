@@ -17,6 +17,7 @@ var WeatherChild = observer(class WeatherCard extends Component {
   }
 
   editToggle(location) {
+    console.log(location)
     location.isEditable = !location.isEditable;
   }
 
@@ -31,10 +32,11 @@ var WeatherChild = observer(class WeatherCard extends Component {
 
   saveNewLocation() {
     axios.put('/updateLocationName', {
+      user_id: this.props.snowStore._id,
       _id: this.props.locationProps._id,
       newLocationName: this.state.locationName
     }).then((res) => {
-      axios.get('/retrieveSavedLocations').then((res) => {
+      axios.post('/retrieveSavedLocations',{id:this.props.snowStore._id}).then((res) => {
         this.props.snowStore.weather = res.data
       }).then((res) => {
         console.log(this);
@@ -68,8 +70,11 @@ var WeatherChild = observer(class WeatherCard extends Component {
   }
 
   deleteCard(id) {
-    axios.post('/deleteCard', { id: id }).then((res) => {
-      axios.get('/retrieveSavedLocations').then((res) => {
+    axios.post('/deleteCard', { 
+      user_id: this.props.snowStore._id,
+      id: id 
+    }).then((res) => {
+      axios.post('/retrieveSavedLocations',{id:this.props.snowStore._id}).then((res) => {
         this.props.snowStore.weather = res.data;
       })
     })
@@ -106,9 +111,9 @@ var WeatherChild = observer(class WeatherCard extends Component {
       return (
         <LocationCard>
           <TopLine><ButtonWrap>
-            <Refresh onClick={() => this.minimize(location._id, card)}>
+            {/* <Refresh onClick={() => this.minimize(location._id, card)}>
               <i className="material-icons" style={{ color: 'white', fontWeight: 'bold', marginTop: 3 }}>autorenew</i>
-            </Refresh>
+            </Refresh> */}
             <Delete onClick={() => this.deleteCard(location._id)}>X</Delete></ButtonWrap>
             <LocationTitle><Location>{location.locationName}</Location>
               <EditButton onClick={() => this.editToggle(location)}>

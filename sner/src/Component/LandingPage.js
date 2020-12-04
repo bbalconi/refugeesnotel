@@ -1,21 +1,30 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Redirect, Link, withRouter } from 'react-router-dom';
 import styled, { css } from 'styled-components';
+import { inject, observer } from 'mobx-react';
 const axios = require('axios');
 
-class LandingPage extends Component {
+var LandingPage = observer(class LandingPage extends Component {
     constructor(props) {
         super(props);
         this.signIn = this.signIn.bind(this);
+        this.success = this.success.bind(this);
         this.state = {
           username: '',
           password: '',
-          error: false
+          error: false,
+          redirect: false
         }
     }
 
     username(e){this.setState({username: e.target.value})}
     password(e){this.setState({password: e.target.value})}
+
+    success(e){
+        this.props.snowStore.user = e.username;
+        this.props.snowStore._id = e._id
+        this.setState({redirect:true});
+    }   
 
     signIn(){
       new Promise((res, rej) => {
@@ -23,13 +32,13 @@ class LandingPage extends Component {
         username: this.state.username,
         password: this.state.password
       }).then((res) => {
-        res.data ? console.log('fkc') : this.setState({error:true})
+        res.data ? res.data === 'err' ? this.setState({error:true}) : this.success(res.data) : this.setState({error:true})
         })
       })
     }
 
     render() {
-      const error = this.state.error
+      const [error, redirect] = [this.state.error, this.state.redirect]
         return (
             <LandingDiv>
                 <TextWrap>
@@ -50,10 +59,13 @@ class LandingPage extends Component {
                 <Error>
                     {error ? <Text error>auth failed</Text> : <div></div>}
                 </Error>
+                {redirect ? (<Redirect to="/Home"/>) : <div></div>}
             </LandingDiv>
         );
     }
-}
+})
+
+export default withRouter(inject('snowStore')(LandingPage));
 
 const LandingDiv = styled.div`
     align-content: center;
@@ -135,5 +147,3 @@ const Error = styled.div`
     margin-right: auto;
     margin-top: 1vh;
 `
-
-export default LandingPage;
