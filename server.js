@@ -17,7 +17,7 @@ var LocalStrategy = require("passport-local").Strategy;
 var passwordHash = require("password-hash");
 require('dotenv').config();
 
-let mongodbUri = `mongodb://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD}@ds223738.mlab.com:23738/refugeesnotel`;
+let mongodbUri = `mongodb+srv://${process.env.MLAB_USER}:${process.env.MLAB_PASSWORD}@refugeesnotel.kouz6.mongodb.net/refugeesnotel?retryWrites=true&w=majority`;
 
 const darksky = new DarkSky(process.env.DARK_SKY) // Your API KEY can be hardcoded, but I recommend setting it as an env variable.
 //45.816763, -110.929706
